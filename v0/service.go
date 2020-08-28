@@ -7,6 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type service struct {
+}
+
+var _v0 = &service{}
+
 func FailedJSON(ctx *gin.Context, msg string) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"Status":  "failed",
@@ -14,7 +19,11 @@ func FailedJSON(ctx *gin.Context, msg string) {
 	})
 }
 
-func RegisterV0(group *gin.RouterGroup) {
+func Register(group *gin.RouterGroup) {
+	_v0.Hash(group)
+}
+
+func (service) Hash(group *gin.RouterGroup) {
 	group.GET(":hash", func(ctx *gin.Context) {
 		hash := ctx.Param("hash")
 		if hash == "" {

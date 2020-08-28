@@ -39,7 +39,7 @@ func (s *service) Stop() error {
 
 func (s *service) registerHandle() {
 	groupV0 := s.engine.Group("/api/v0")
-	v0.RegisterV0(groupV0)
+	v0.Register(groupV0)
 }
 
 func New(port int) (Service, error) {
