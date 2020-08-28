@@ -40,12 +40,12 @@ func (s *service) registerHandle() {
 	v0.RegisterV0(groupV0)
 }
 
-func New(port int) Service {
+func New(port int) (Service, error) {
 	ctx, cancel := context.WithCancel(context.TODO())
 	dbcfg := db.ParseFromMap(nil)
 	dbeng, err := db.New(dbcfg)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 	return &service{
 		ctx:    ctx,
@@ -54,5 +54,5 @@ func New(port int) Service {
 		serv:   http.Server{},
 		engine: gin.Default(),
 		db:     dbeng,
-	}
+	}, nil
 }

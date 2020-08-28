@@ -3,6 +3,8 @@ package linkrest
 import (
 	"testing"
 	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func TestNew(t *testing.T) {
@@ -24,10 +26,13 @@ func TestNew(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := New(tt.args.port)
+			got, err := New(tt.args.port)
+			if err != nil {
+				t.Fatal(err)
+			}
 			go got.Start()
-			time.Sleep(5 * time.Second)
-			err := got.Stop()
+			time.Sleep(30 * time.Second)
+			err = got.Stop()
 			t.Log(err)
 		})
 	}
