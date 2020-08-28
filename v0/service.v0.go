@@ -1,6 +1,7 @@
 package v0
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -16,6 +17,7 @@ func RegisterV0(group *gin.RouterGroup) {
 	group.GET(":hash", func(ctx *gin.Context) {
 		hash := ctx.Param("hash")
 		if hash == "" {
+			FailedJSON(ctx, fmt.Sprintf("%v not found", hash))
 			return
 		}
 	})
