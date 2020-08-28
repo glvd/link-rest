@@ -4,5 +4,6 @@ go 1.12
 
 require (
 	github.com/gin-gonic/gin v1.6.3
+	github.com/goextension/extmap v0.0.2
 	github.com/xormsharp/xorm v1.0.3
 )

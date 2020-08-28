@@ -2,8 +2,10 @@ package db
 
 import (
 	"fmt"
-	"github.com/xormsharp/xorm"
 	"net/url"
+
+	"github.com/goextension/extmap"
+	"github.com/xormsharp/xorm"
 )
 
 type SQLConnect struct {
@@ -20,9 +22,23 @@ type SQLConnect struct {
 type Connectable interface {
 	Type() string
 	String() string
+	ConnectParams() (string, string)
 }
 
-func defaultConnectAble() Connectable {
+func ParseFromMap(m extmap.Map) *SQLConnect {
+	c := defaultSQLConnect()
+	c.SQLType = m.GetStringD("SQLType", c.SQLType)
+	c.Username = m.GetStringD("Username", c.Username)
+	c.Password = m.GetStringD("Password", c.Password)
+	c.Addr = m.GetStringD("Addr", c.Addr)
+	c.Port = m.GetStringD("Port", c.Port)
+	c.Schema = m.GetStringD("Schema", c.Schema)
+	c.Param = m.GetStringD("Param", c.Param)
+	c.Location = m.GetStringD("Location", c.Location)
+	return c
+}
+
+func defaultSQLConnect() *SQLConnect {
 	return &SQLConnect{
 		SQLType:  "mysql",
 		Username: "root",
@@ -36,7 +52,7 @@ func defaultConnectAble() Connectable {
 }
 
 func New(c Connectable) (*xorm.Engine, error) {
-	engine, err := xorm.NewEngine(c.Type(), c.String())
+	engine, err := xorm.NewEngine(c.ConnectParams())
 	if err != nil {
 		return nil, err
 	}
@@ -51,4 +67,8 @@ func (c SQLConnect) String() string {
 	return fmt.Sprintf("%s:%s@tcp(%s:%s)/%s%sloc=%s&charset=utf8&parseTime=true",
 		c.Username, c.Password, c.Addr, c.Port, c.Schema, c.Param, url.QueryEscape(c.Location),
 	)
+}
+
+func (c SQLConnect) ConnectParams() (string, string) {
+	return c.Type(), c.String()
 }
