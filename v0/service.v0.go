@@ -2,8 +2,9 @@ package v0
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 func FailedJSON(ctx *gin.Context, msg string) {
@@ -21,8 +22,8 @@ func RegisterV0(group *gin.RouterGroup) {
 			return
 		}
 		ctx.JSON(http.StatusOK, gin.H{
-			"Status":  "success",
-			"Message": hash,
+			"Status": "success",
+			"Data":   hash,
 		})
 	})
 }

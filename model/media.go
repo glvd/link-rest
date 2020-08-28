@@ -1,5 +1,7 @@
 package model
 
+import "github.com/xormsharp/xorm"
+
 type Media struct {
 	BaseModel
 	VideoNo      string   `xorm:"video_no" json:"video_no"`           //编号
@@ -32,4 +34,8 @@ type Media struct {
 	Length       string   `xorm:"length" json:"length"`               //时长
 	Sample       []string `xorm:"json sample" json:"sample"`          //样板图
 	Uncensored   bool     `xorm:"uncensored" json:"uncensored"`       //有码,无码
+}
+
+func (m *Media) Count(session *xorm.Session) (int64, error) {
+	return session.Table(m).Count()
 }

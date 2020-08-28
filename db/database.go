@@ -48,7 +48,7 @@ func defaultSQLConnect() *SQLConnect {
 		Password: "111111",
 		Addr:     "127.0.0.1",
 		Port:     "3306",
-		Schema:   "redball",
+		Schema:   "link",
 		Param:    "?",
 		Location: "Asia/Shanghai",
 	}
