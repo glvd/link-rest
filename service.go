@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/glvd/link-rest/db"
 	v0 "github.com/glvd/link-rest/v0"
+	"github.com/xormsharp/xorm"
 	"net/http"
 )
 
@@ -19,6 +21,7 @@ type service struct {
 	engine *gin.Engine
 	port   int
 	serv   http.Server
+	db     *xorm.Engine
 }
 
 func (s *service) Start() error {
@@ -39,11 +42,17 @@ func (s *service) registerHandle() {
 
 func New(port int) Service {
 	ctx, cancel := context.WithCancel(context.TODO())
+	dbcfg := db.ParseFromMap(nil)
+	dbeng, err := db.New(dbcfg)
+	if err != nil {
+		return nil
+	}
 	return &service{
 		ctx:    ctx,
 		cancel: cancel,
 		port:   port,
 		serv:   http.Server{},
 		engine: gin.Default(),
+		db:     dbeng,
 	}
 }

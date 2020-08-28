@@ -27,6 +27,9 @@ type Connectable interface {
 
 func ParseFromMap(m extmap.Map) *SQLConnect {
 	c := defaultSQLConnect()
+	if m == nil {
+		return c
+	}
 	c.SQLType = m.GetStringD("SQLType", c.SQLType)
 	c.Username = m.GetStringD("Username", c.Username)
 	c.Password = m.GetStringD("Password", c.Password)
