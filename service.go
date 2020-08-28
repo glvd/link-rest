@@ -45,7 +45,7 @@ func (s *service) registerHandle() {
 func New(port int) (Service, error) {
 	ctx, cancel := context.WithCancel(context.TODO())
 	dbcfg := db.ParseFromMap(nil)
-	dbeng, err := db.New(dbcfg)
+	db, err := db.New(dbcfg)
 	if err != nil {
 		return nil, err
 	}
@@ -55,6 +55,6 @@ func New(port int) (Service, error) {
 		port:   port,
 		serv:   http.Server{},
 		engine: gin.Default(),
-		db:     dbeng,
+		db:     db,
 	}, nil
 }

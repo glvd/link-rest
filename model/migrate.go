@@ -12,11 +12,11 @@ func RegisterTable(v interface{}) {
 	migrateTable[reflect.TypeOf(v).String()] = v
 }
 
-func Migration(engine *xorm.Engine) {
+func Migration(db *xorm.Engine) {
 	for t, tb := range migrateTable {
-		err := engine.Sync2(tb)
-		if err != nil {
-			fmt.Printf("sync(%v) failed with error:%v\n", t, err)
+		ret := db.Sync2(tb)
+		if ret != nil {
+			fmt.Printf("sync(%v) failed with error:%v\n", t, ret.Error)
 			continue
 		}
 	}

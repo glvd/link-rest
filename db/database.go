@@ -2,10 +2,10 @@ package db
 
 import (
 	"fmt"
+	"github.com/xormsharp/xorm"
 	"net/url"
 
 	"github.com/goextension/extmap"
-	"github.com/xormsharp/xorm"
 )
 
 type SQLConnect struct {
@@ -55,11 +55,11 @@ func defaultSQLConnect() *SQLConnect {
 }
 
 func New(c Connectable) (*xorm.Engine, error) {
-	engine, err := xorm.NewEngine(c.ConnectParams())
+	db, err := xorm.NewEngine(c.ConnectParams())
 	if err != nil {
 		return nil, err
 	}
-	return engine, nil
+	return db, nil
 }
 
 func (c SQLConnect) Type() string {
