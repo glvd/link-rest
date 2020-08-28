@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/glvd/link-rest/db"
+	"github.com/glvd/link-rest/model"
 	v0 "github.com/glvd/link-rest/v0"
 	"github.com/xormsharp/xorm"
 	"net/http"
@@ -25,6 +26,7 @@ type service struct {
 }
 
 func (s *service) Start() error {
+	model.Migration(s.db)
 	s.registerHandle()
 	s.serv.Handler = s.engine
 	s.serv.Addr = fmt.Sprintf("0.0.0.0:%d", s.port)

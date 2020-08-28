@@ -36,6 +36,10 @@ type Media struct {
 	Uncensored   bool     `xorm:"uncensored" json:"uncensored"`       //有码,无码
 }
 
+func init() {
+	RegisterTable(&Media{})
+}
+
 func (m *Media) Count(session *xorm.Session) (int64, error) {
 	return session.Table(m).Count()
 }
