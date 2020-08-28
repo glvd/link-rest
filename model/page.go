@@ -10,6 +10,8 @@ import (
 var DefaultPaginatorLimit = 10
 
 type Paginator struct {
+	Order     string
+	Desc      []string
 	Current   int
 	Limit     int
 	Data      interface{}
@@ -23,6 +25,8 @@ type Counter interface {
 
 func NewPage(v interface{}) *Paginator {
 	return &Paginator{
+		Order:     "id",
+		Desc:      nil,
 		Current:   0,
 		Limit:     0,
 		Data:      v,
@@ -43,6 +47,11 @@ func (p *Paginator) Parse(vals url.Values) *Paginator {
 	if err != nil {
 		p.Current = 0
 	}
+	order := vals.Get("order")
+	if order == "" {
+		p.Order = "id"
+	}
+
 	return p
 }
 
@@ -60,6 +69,14 @@ func (p *Paginator) Find(session *xorm.Session) (*Paginator, error) {
 	if p.Current >= p.TotalPage {
 		p.Current = 0
 	}
+
+	if p.Order != "" {
+		session = session.OrderBy(p.Order)
+	}
+	if p.Desc != nil {
+		session = session.Desc(p.Desc...)
+	}
+
 	err = session.Limit(p.Limit, p.Current*p.Limit).Find(p.Data)
 	if err != nil {
 		return nil, err
