@@ -1,6 +1,7 @@
 package model
 
 import (
+	"github.com/goextension/log"
 	"github.com/xormsharp/xorm"
 	"math"
 	"net/url"
@@ -52,22 +53,29 @@ func (p *Paginator) Parse(vals url.Values) *Paginator {
 		p.Order = "id"
 	}
 
+	desc := vals["desc"]
+	if desc != nil {
+		p.Desc = desc
+	}
+
 	return p
 }
 
 func (p *Paginator) Find(session *xorm.Session) (*Paginator, error) {
 	count, err := session.Count()
+	log.Infow("count", "error", err, "count", count)
 	if err != nil {
 		return nil, err
 	}
+
 	p.Total = count
 	p.TotalPage = 0
 	if p.Total != 0 {
 		p.TotalPage = int(math.Ceil(float64(p.Total) / float64(p.Limit)))
 	}
 
-	if p.Current >= p.TotalPage {
-		p.Current = 0
+	if p.Current <= 0 || p.Current > p.TotalPage {
+		p.Current = 1
 	}
 
 	if p.Order != "" {
@@ -77,7 +85,7 @@ func (p *Paginator) Find(session *xorm.Session) (*Paginator, error) {
 		session = session.Desc(p.Desc...)
 	}
 
-	err = session.Limit(p.Limit, p.Current*p.Limit).Find(p.Data)
+	err = session.Limit(p.Limit, p.Current-1*p.Limit).Find(p.Data)
 	if err != nil {
 		return nil, err
 	}

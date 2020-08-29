@@ -2,6 +2,7 @@ package v0
 
 import (
 	"github.com/glvd/link-rest/model"
+	"github.com/goextension/log"
 	"github.com/xormsharp/xorm"
 	"net/http"
 
@@ -31,8 +32,12 @@ func (s service) total(group *gin.RouterGroup) {
 		page := model.NewPage(new([]model.Media))
 		page.Parse(ctx.Request.URL.Query())
 
-		find, err := page.Find(s.db.NewSession())
+		s := s.db.NewSession()
+		defer s.Close()
+		s.Table(new(model.Media))
+		find, err := page.Find(s)
 		if err != nil {
+			log.Errorw("find data error", "error", err)
 			FailedJSON(ctx, "data not found")
 			return
 		}

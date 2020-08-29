@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/glvd/link-rest/db"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/goextension/tool"
 	"github.com/google/uuid"
 	"github.com/xormsharp/xorm"
@@ -12,7 +13,11 @@ import (
 var testdb *xorm.Engine
 
 func init() {
-	engine, _ := db.New(nil)
+	cfg := db.ParseFromMap(nil)
+	engine, err := db.New(cfg)
+	if err != nil {
+		panic(err)
+	}
 	testdb = engine
 }
 
