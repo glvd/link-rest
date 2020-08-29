@@ -1,10 +1,8 @@
-package linkrest
+package rest
 
 import (
 	"testing"
 	"time"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 func TestNew(t *testing.T) {

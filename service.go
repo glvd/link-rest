@@ -1,4 +1,4 @@
-package linkrest
+package rest
 
 import (
 	"context"
@@ -26,7 +26,9 @@ type service struct {
 }
 
 func (s *service) Start() error {
-	model.Migration(s.db)
+	if err := model.Migration(s.db); err != nil {
+		return err
+	}
 	s.registerHandle()
 	s.serv.Handler = s.engine
 	s.serv.Addr = fmt.Sprintf("0.0.0.0:%d", s.port)
