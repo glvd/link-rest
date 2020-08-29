@@ -1,7 +1,5 @@
 package model
 
-import "github.com/xormsharp/xorm"
-
 type Media struct {
 	BaseModel    `xorm:"extends" json:"-"`
 	VideoNo      string      `xorm:"video_no" json:"video_no"`           //编号
@@ -38,8 +36,4 @@ type Media struct {
 
 func init() {
 	RegisterTable(&Media{})
-}
-
-func (m *Media) Count(session *xorm.Session) (int64, error) {
-	return session.Table(m).Count()
 }
