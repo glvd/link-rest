@@ -3,7 +3,7 @@ package model
 import "github.com/xormsharp/xorm"
 
 type Media struct {
-	BaseModel    `xorm:"extends"`
+	BaseModel    `xorm:"extends" json:"-"`
 	VideoNo      string      `xorm:"video_no" json:"video_no"`           //编号
 	Intro        string      `xorm:"varchar(2048)" json:"intro"`         //简介
 	Alias        StringArray `xorm:"json" json:"alias"`                  //别名，片名

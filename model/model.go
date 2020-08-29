@@ -1,8 +1,6 @@
 package model
 
 import (
-	"database/sql/driver"
-	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
@@ -22,14 +20,4 @@ func (model *BaseModel) BeforeInsert() {
 	if model.ID == "" {
 		model.ID = uuid.Must(uuid.NewRandom()).String()
 	}
-}
-
-// Value 实现方法
-func (p StringArray) Value() (driver.Value, error) {
-	return json.Marshal(p)
-}
-
-// Scan 实现方法
-func (p *StringArray) Scan(input interface{}) error {
-	return json.Unmarshal(input.([]byte), p)
 }

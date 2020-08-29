@@ -1,13 +1,15 @@
 package v0
 
 import (
-	"fmt"
+	"github.com/glvd/link-rest/model"
+	"github.com/xormsharp/xorm"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type service struct {
+	db *xorm.Engine
 }
 
 var _v0 = &service{}
@@ -19,20 +21,25 @@ func FailedJSON(ctx *gin.Context, msg string) {
 	})
 }
 
-func Register(group *gin.RouterGroup) {
-	_v0.Hash(group)
+func Register(db *xorm.Engine, group *gin.RouterGroup) {
+	_v0.db = db
+	_v0.total(group)
 }
 
-func (service) Hash(group *gin.RouterGroup) {
-	group.GET(":hash", func(ctx *gin.Context) {
-		hash := ctx.Param("hash")
-		if hash == "" {
-			FailedJSON(ctx, fmt.Sprintf("%v not found", hash))
+func (s service) total(group *gin.RouterGroup) {
+	group.GET("/all", func(ctx *gin.Context) {
+		page := model.NewPage(new([]model.Media))
+		page.Parse(ctx.Request.URL.Query())
+
+		find, err := page.Find(s.db.NewSession())
+		if err != nil {
+			FailedJSON(ctx, "data not found")
 			return
 		}
+
 		ctx.JSON(http.StatusOK, gin.H{
 			"Status": "success",
-			"Data":   hash,
+			"Data":   find,
 		})
 	})
 }
