@@ -40,6 +40,7 @@ func (s *service) Stop() error {
 }
 
 func (s *service) registerHandle() {
+	apiDocs(s.engine)
 	groupV0 := s.engine.Group("/api/v0")
 	v0.Register(s.db, groupV0)
 }
