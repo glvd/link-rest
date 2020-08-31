@@ -53,7 +53,7 @@ func (s service) query(group *gin.RouterGroup) {
 		page := model.Page(ctx.Request, new([]model.Media))
 		m := s.db.Model(model.Media{})
 		if ctx.PostForm("video_no") != "" {
-			infos := s.db.Model(model.Info{}).Where("video_no like (?)", "%"+ctx.PostForm("video_no")+"%").Select("id")
+			infos := s.db.Model(model.Info{}).Where("video_no = (?)", ctx.PostForm("video_no")).Select("id")
 			m = m.Where("media.info_id in (?)", infos)
 		}
 
