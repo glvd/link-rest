@@ -13,5 +13,5 @@ type File struct {
 }
 
 func init() {
-	RegisterTable(&File{})
+	RegisterTable(File{})
 }

@@ -2,7 +2,7 @@ package model
 
 import (
 	"fmt"
-	"github.com/xormsharp/xorm"
+	"gorm.io/gorm"
 	"reflect"
 )
 
@@ -12,9 +12,10 @@ func RegisterTable(v interface{}) {
 	migrateTable[reflect.TypeOf(v).String()] = v
 }
 
-func Migration(db *xorm.Engine) (err error) {
+func Migration(db *gorm.DB) (err error) {
 	for t, tb := range migrateTable {
-		err = db.Sync2(tb)
+		fmt.Println("migrate table", t)
+		err = db.AutoMigrate(tb)
 		if err != nil {
 			fmt.Printf("sync(%v) failed with error:%v\n", t, err)
 			return err

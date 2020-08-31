@@ -5,11 +5,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/goextension/tool"
 	"github.com/google/uuid"
-	"github.com/xormsharp/xorm"
+	"gorm.io/gorm"
 	"testing"
 )
 
-var testdb *xorm.Engine
+var testdb *gorm.DB
 
 func init() {
 	cfg := db.ParseFromMap(nil)
@@ -36,32 +36,32 @@ func generateTestMedia(id string) *Media {
 			BaseModel: BaseModel{
 				ID: infoID,
 			},
-			VideoNo:      "no_" + tool.GenerateRandomString(6, tool.RandomNum),
-			Intro:        "intro_" + tool.GenerateRandomString(32),
-			Alias:        nil,
-			Key:          "",
-			M3U8:         "",
-			Role:         nil,
-			Director:     "",
-			Systematics:  "",
-			Season:       "",
-			TotalEpisode: "",
-			Episode:      "",
-			Producer:     "",
-			Publisher:    "",
-			Type:         "",
-			Format:       "",
-			Language:     "",
-			Caption:      "",
-			Group:        "",
-			Index:        "",
-			ReleaseDate:  "",
-			Sharpness:    "",
-			Series:       "",
-			Tags:         nil,
-			Length:       "",
-			Sample:       nil,
-			Uncensored:   false,
+			//VideoNo:      "no_" + tool.GenerateRandomString(6, tool.RandomNum),
+			//Intro:        "intro_" + tool.GenerateRandomString(32),
+			//Alias:        nil,
+			//Key:          "",
+			//M3U8:         "",
+			//Role:         nil,
+			//Director:     "",
+			//Systematics:  "",
+			//Season:       "",
+			//TotalEpisode: "",
+			//Episode:      "",
+			//Producer:     "",
+			//Publisher:    "",
+			//Type:         "",
+			//Format:       "",
+			//Language:     "",
+			//Caption:      "",
+			//Group:        "",
+			//Index:        "",
+			//ReleaseDate:  "",
+			//Sharpness:    "",
+			//Series:       "",
+			//Tags:         nil,
+			//Length:       "",
+			//Sample:       nil,
+			//Uncensored:   false,
 		},
 		FileID: fileID,
 		File: File{
@@ -83,7 +83,7 @@ func generateTestMedia(id string) *Media {
 
 func TestInsertMedia(t *testing.T) {
 	type args struct {
-		db *xorm.Engine
+		db *gorm.DB
 	}
 	err := Migration(testdb)
 	if err != nil {
@@ -91,17 +91,17 @@ func TestInsertMedia(t *testing.T) {
 	}
 	for i := 0; i < 100; i++ {
 		media := generateTestMedia("")
-		_, err = testdb.Insert(media.File)
-		if err != nil {
-			t.Fatal(err)
-		}
-		_, err = testdb.Insert(media.Info)
-		if err != nil {
-			t.Fatal(err)
-		}
-		_, err = testdb.Insert(media)
-		if err != nil {
-			t.Fatal(err)
+		//_, err = testdb.Create(media.File)
+		//if err != nil {
+		//	t.Fatal(err)
+		//}
+		//_, err = testdb.Insert(media.Info)
+		//if err != nil {
+		//	t.Fatal(err)
+		//}
+		db := testdb.Create(media)
+		if db.Error != nil {
+			t.Fatal(db.Error)
 		}
 	}
 
