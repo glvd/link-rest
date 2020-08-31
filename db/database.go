@@ -57,7 +57,7 @@ func defaultSQLConnect() *SQLConnect {
 func New(c Connectable) (*xorm.Engine, error) {
 	db, err := xorm.NewEngine(c.ConnectParams())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("create db error:%w", err)
 	}
 	return db, nil
 }
