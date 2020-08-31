@@ -1,12 +1,11 @@
 package model
 
 type Info struct {
-	BaseModel    `json:"-"`
-	VideoNo      string      `gorm:"video_no" json:"video_no"`           //编号
-	Intro        string      `gorm:"varchar(2048)" json:"intro"`         //简介
-	Alias        StringArray `gorm:"alias" json:"alias"`                 //别名，片名
-	Key          string      `gorm:"key"  json:"key"`                    //秘钥
-	M3U8         string      `gorm:"m3u8" json:"m3u8"`                   //M3U8名
+	BaseModel `json:"-"`
+	VideoNo   string      `gorm:"video_no" json:"video_no"`   //编号
+	Intro     string      `gorm:"varchar(2048)" json:"intro"` //简介
+	Alias     StringArray `gorm:"alias" json:"alias"`         //别名，片名
+
 	Role         StringArray `gorm:"role" json:"role"`                   //主演
 	Director     string      `gorm:"director" json:"director"`           //导演
 	Systematics  string      `gorm:"systematics" json:"systematics"`     //分级
