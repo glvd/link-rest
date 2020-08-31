@@ -34,9 +34,8 @@ func Register(db *gorm.DB, group *gin.RouterGroup, cache *persistence.InMemorySt
 
 func (s service) total(group *gin.RouterGroup) {
 	group.GET("/show", cache.CachePage(s.cache, time.Minute, func(ctx *gin.Context) {
-		page := model.Page(new([]model.Media), ctx.Request)
+		page := model.Page(ctx.Request, new([]model.Media))
 
-		//sess := s.db.Table(new(model.Media)).Join("left join", "file", "file_id = file.id").Join("left join", "info", "info_id = info.id")
 		find, err := page.Find(s.db.Table("media"))
 		if err != nil {
 			log.Errorw("find data error", "error", err)

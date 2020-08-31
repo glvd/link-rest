@@ -34,7 +34,7 @@ func defaultPage(v interface{}) *Paginator {
 	}
 }
 
-func Page(v interface{}, r *http.Request) *Paginator {
+func Page(r *http.Request, v interface{}) *Paginator {
 	p := defaultPage(v)
 	return p.parse(r)
 }
