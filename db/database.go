@@ -2,10 +2,12 @@ package db
 
 import (
 	"fmt"
-	"github.com/xormsharp/xorm"
+
 	"net/url"
 
 	"github.com/goextension/extmap"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 type SQLConnect struct {
@@ -54,10 +56,10 @@ func defaultSQLConnect() *SQLConnect {
 	}
 }
 
-func New(c Connectable) (*xorm.Engine, error) {
-	db, err := xorm.NewEngine(c.ConnectParams())
+func New(c Connectable) (*gorm.DB, error) {
+	db, err := gorm.Open(mysql.Open(c.String()), &gorm.Config{})
 	if err != nil {
-		return nil, fmt.Errorf("create db error:%w", err)
+		return nil, fmt.Errorf("connect db error:%w", err)
 	}
 	return db, nil
 }

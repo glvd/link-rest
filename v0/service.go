@@ -31,7 +31,8 @@ func (s service) total(group *gin.RouterGroup) {
 	group.GET("/show", func(ctx *gin.Context) {
 		page := model.Page(new([]model.Media), ctx.Request)
 
-		find, err := page.Find(s.db.Table(new(model.Media)))
+		sess := s.db.Table(new(model.Media)).Join("left join", "file", "file_id = file.id").Join("left join", "info", "info_id = info.id")
+		find, err := page.Find(sess)
 		if err != nil {
 			log.Errorw("find data error", "error", err)
 			FailedJSON(ctx, "data not found")
