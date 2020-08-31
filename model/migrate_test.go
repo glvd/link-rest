@@ -1,13 +1,12 @@
 package model
 
 import (
-	"testing"
-
 	"github.com/glvd/link-rest/db"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/goextension/tool"
 	"github.com/google/uuid"
 	"github.com/xormsharp/xorm"
+	"testing"
 )
 
 var testdb *xorm.Engine
@@ -25,50 +24,90 @@ func generateTestMedia(id string) *Media {
 	if id == "" {
 		id = uuid.New().String()
 	}
+	infoID := uuid.New().String()
+	fileID := uuid.New().String()
 	return &Media{
 		BaseModel: BaseModel{
 			ID: id,
 		},
-		VideoNo:      "no_" + tool.GenerateRandomString(6, tool.RandomNum),
-		Intro:        "intro_" + tool.GenerateRandomString(32),
-		Alias:        nil,
-		ThumbHash:    "hash_" + tool.GenerateRandomString(16),
-		PosterHash:   "hash_" + tool.GenerateRandomString(16),
-		SourceHash:   "hash_" + tool.GenerateRandomString(16),
-		M3U8Hash:     "hash_" + tool.GenerateRandomString(16),
-		Key:          "",
-		M3U8:         "",
-		Role:         nil,
-		Director:     "",
-		Systematics:  "",
-		Season:       "",
-		TotalEpisode: "",
-		Episode:      "",
-		Producer:     "",
-		Publisher:    "",
-		Type:         "",
-		Format:       "",
-		Language:     "",
-		Caption:      "",
-		Group:        "",
-		Index:        "",
-		ReleaseDate:  "",
-		Sharpness:    "",
-		Series:       "",
-		Tags:         nil,
-		Length:       "",
-		Sample:       nil,
-		Uncensored:   false,
+		Root:   "hash_" + tool.GenerateRandomString(16),
+		InfoID: infoID,
+		Info: Info{
+			BaseModel: BaseModel{
+				ID: infoID,
+			},
+			VideoNo:      "no_" + tool.GenerateRandomString(6, tool.RandomNum),
+			Intro:        "intro_" + tool.GenerateRandomString(32),
+			Alias:        nil,
+			Key:          "",
+			M3U8:         "",
+			Role:         nil,
+			Director:     "",
+			Systematics:  "",
+			Season:       "",
+			TotalEpisode: "",
+			Episode:      "",
+			Producer:     "",
+			Publisher:    "",
+			Type:         "",
+			Format:       "",
+			Language:     "",
+			Caption:      "",
+			Group:        "",
+			Index:        "",
+			ReleaseDate:  "",
+			Sharpness:    "",
+			Series:       "",
+			Tags:         nil,
+			Length:       "",
+			Sample:       nil,
+			Uncensored:   false,
+		},
+		FileID: fileID,
+		File: File{
+			BaseModel: BaseModel{
+				ID: fileID,
+			},
+			Thumb: Hash{
+				Path: "",
+				Hash: "hash_" + tool.GenerateRandomString(32),
+			},
+			Poster: Hash{
+				Path: "",
+				Hash: "hash_" + tool.GenerateRandomString(32),
+			},
+			Source: Hash{
+				Path: "",
+				Hash: "hash_" + tool.GenerateRandomString(32),
+			},
+			M3U8: Hash{
+				Path: "",
+				Hash: "hash_" + tool.GenerateRandomString(32),
+			},
+		},
 	}
+
 }
 
 func TestInsertMedia(t *testing.T) {
 	type args struct {
 		db *xorm.Engine
 	}
+	err := Migration(testdb)
+	if err != nil {
+		t.Fatal(err)
+	}
 	for i := 0; i < 100; i++ {
 		media := generateTestMedia("")
-		_, err := testdb.Insert(media)
+		_, err = testdb.Insert(media.File)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = testdb.Insert(media.Info)
+		if err != nil {
+			t.Fatal(err)
+		}
+		_, err = testdb.Insert(media)
 		if err != nil {
 			t.Fatal(err)
 		}

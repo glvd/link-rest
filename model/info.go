@@ -5,10 +5,6 @@ type Info struct {
 	VideoNo      string      `xorm:"video_no" json:"video_no"`           //编号
 	Intro        string      `xorm:"varchar(2048)" json:"intro"`         //简介
 	Alias        StringArray `xorm:"json" json:"alias"`                  //别名，片名
-	ThumbHash    string      `xorm:"thumb_hash" json:"thumb_hash"`       //缩略图
-	PosterHash   string      `xorm:"poster_hash" json:"poster_hash"`     //海报地址
-	SourceHash   string      `xorm:"source_hash" json:"source_hash"`     //原片地址
-	M3U8Hash     string      `xorm:"m3u8_hash" json:"m3u8_hash"`         //切片地址
 	Key          string      `xorm:"key"  json:"key"`                    //秘钥
 	M3U8         string      `xorm:"m3u8" json:"m3u8"`                   //M3U8名
 	Role         StringArray `xorm:"json" json:"role"`                   //主演
@@ -32,4 +28,8 @@ type Info struct {
 	Length       string      `xorm:"length" json:"length"`               //时长
 	Sample       StringArray `xorm:"json sample" json:"sample"`          //样板图
 	Uncensored   bool        `xorm:"uncensored" json:"uncensored"`       //有码,无码
+}
+
+func init() {
+	RegisterTable(&Info{})
 }
