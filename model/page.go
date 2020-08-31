@@ -7,8 +7,8 @@ import (
 	"gorm.io/gorm/clause"
 	"math"
 	"net/http"
+	"net/url"
 	"strconv"
-	"strings"
 )
 
 var DefaultPaginatorPerPage = 10
@@ -113,43 +113,57 @@ func (p *Paginator) Find(db *gorm.DB) (*Paginator, error) {
 
 func (p *Paginator) next() string {
 	if p.LastPage > p.CurrentPage+1 {
-		return p.Path + "?" + p.perPage(page(p.CurrentPage+1))
+		v := url.Values{}
+		page(v, p.CurrentPage+1)
+		p.perPage(v)
+		return p.Path + "?" + v.Encode()
 	}
 	return ""
 }
 
 func (p *Paginator) prev() string {
 	if p.CurrentPage-1 > 0 {
-		return p.Path + "?" + p.perPage(page(p.CurrentPage-1))
+		v := url.Values{}
+		page(v, p.CurrentPage-1)
+		p.perPage(v)
+		return p.Path + "?" + v.Encode()
 	}
 	return ""
 }
 
 func (p *Paginator) last() string {
 	if p.LastPage > 0 {
-		return p.Path + "?" + p.perPage(page(p.LastPage))
+		v := url.Values{}
+		page(v, p.LastPage)
+		p.perPage(v)
+		return p.Path + "?" + v.Encode()
 	}
 	return ""
 }
 func (p *Paginator) first() string {
 	if p.Total > 0 {
-		return p.Path + "?" + p.perPage(page(1))
+		v := url.Values{}
+		page(v, 1)
+		p.perPage(v)
+		return p.Path + "?" + v.Encode()
 	}
 	return ""
 }
 
-func page(i int) string {
-	return "page=" + strconv.Itoa(i)
+func page(values url.Values, i int) {
+	values.Set("page", strconv.Itoa(i))
 }
 
-func perPage(i int) string {
-	return "per_page=" + strconv.Itoa(i)
+func perPage(values url.Values, i int) {
+	values.Set("per_page", strconv.Itoa(i))
 }
 
-func (p *Paginator) perPage(s string) string {
-	ret := []string{s}
+func (p *Paginator) page(values url.Values, i int) {
+	values.Set("per_page", strconv.Itoa(i))
+}
+
+func (p *Paginator) perPage(values url.Values) {
 	if p.PerPage != DefaultPaginatorPerPage {
-		ret = append(ret, perPage(p.PerPage))
+		perPage(values, p.PerPage)
 	}
-	return strings.Join(ret, "&")
 }
