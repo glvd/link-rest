@@ -28,7 +28,7 @@ func Register(db *xorm.Engine, group *gin.RouterGroup) {
 }
 
 func (s service) total(group *gin.RouterGroup) {
-	group.GET("/all", func(ctx *gin.Context) {
+	group.GET("/show", func(ctx *gin.Context) {
 		page := model.NewPage(new([]model.Media))
 		page.Parse(ctx.Request.URL.Query())
 
