@@ -68,22 +68,14 @@ func generateTestMedia(id string) *Media {
 			BaseModel: BaseModel{
 				ID: fileID,
 			},
-			Thumb: Hash{
-				Path: "",
-				Hash: "hash_" + tool.GenerateRandomString(32),
-			},
-			Poster: Hash{
-				Path: "",
-				Hash: "hash_" + tool.GenerateRandomString(32),
-			},
-			Source: Hash{
-				Path: "",
-				Hash: "hash_" + tool.GenerateRandomString(32),
-			},
-			M3U8: Hash{
-				Path: "",
-				Hash: "hash_" + tool.GenerateRandomString(32),
-			},
+			ThumbPath:  "",
+			ThumbHash:  "hash_" + tool.GenerateRandomString(32),
+			PosterPath: "",
+			PosterHash: "hash_" + tool.GenerateRandomString(32),
+			SourcePath: "",
+			SourceHash: "hash_" + tool.GenerateRandomString(32),
+			M3U8Path:   "",
+			M3U8Hash:   "hash_" + tool.GenerateRandomString(32),
 		},
 	}
 
