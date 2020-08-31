@@ -83,7 +83,7 @@ func (p *Paginator) Find(session *xorm.Session) (*Paginator, error) {
 		return nil, err
 	}
 
-	if p.CurrentPage <= 0 {
+	if p.CurrentPage <= 0 || p.CurrentPage > p.LastPage {
 		p.CurrentPage = 1
 	}
 
