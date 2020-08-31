@@ -29,13 +29,9 @@ func Register(db *xorm.Engine, group *gin.RouterGroup) {
 
 func (s service) total(group *gin.RouterGroup) {
 	group.GET("/show", func(ctx *gin.Context) {
-		page := model.NewPage(new([]model.Media))
-		page.Parse(ctx.Request.URL.Query())
+		page := model.Page(new([]model.Media), ctx.Request)
 
-		s := s.db.NewSession()
-		defer s.Close()
-		s.Table(new(model.Media))
-		find, err := page.Find(s)
+		find, err := page.Find(s.db.Table(new(model.Media)))
 		if err != nil {
 			log.Errorw("find data error", "error", err)
 			FailedJSON(ctx, "data not found")
