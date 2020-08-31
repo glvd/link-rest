@@ -53,21 +53,21 @@ func (s service) query(group *gin.RouterGroup) {
 		page := model.Page(ctx.Request, new([]model.Media))
 		m := s.db.Model(model.Media{})
 		if ctx.Query("video_no") != "" {
-			infos := s.db.Model(model.Info{}).Where("video_no=?", ctx.Query("video_no")).Select("id")
+			infos := s.db.Model(model.Info{}).Where("video_no like (?)", "%"+ctx.Query("video_no")+"%").Select("id")
 			m = m.Where("media.info_id in (?)", infos)
 		}
 
 		if ctx.Query("intro") != "" {
-			infos := s.db.Model(model.Info{}).Where("intro=?", ctx.Query("intro")).Select("id")
+			infos := s.db.Model(model.Info{}).Where("intro like (?)", "%"+ctx.Query("intro")+"%").Select("id")
 			m = m.Where("media.info_id in (?)", infos)
 		}
 
 		if ctx.Query("hash") != "" {
-			files := s.db.Model(model.File{}).Where("thumb_hash=?", ctx.Query("hash")).
-				Or("poster_hash=?", ctx.Query("hash")).
-				Or("source_hash=?", ctx.Query("hash")).
-				Or("m3u8_hash=?", ctx.Query("hash")).Select("id")
-			m = m.Where("media.file_id in (?)", files)
+			files := s.db.Model(model.File{}).Where("thumb_hash = (?)", ctx.Query("hash")).
+				Or("poster_hash = (?)", ctx.Query("hash")).
+				Or("source_hash = (?)", ctx.Query("hash")).
+				Or("m3u8_hash = (?)", ctx.Query("hash")).Select("id")
+			m = m.Where("media.file_id in (?)", files).Or("root = (?)", ctx.Query("hash"))
 		}
 
 		find, err := page.Find(m)
