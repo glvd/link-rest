@@ -59,23 +59,6 @@ func (p *Paginator) parse(r *http.Request) *Paginator {
 	}
 
 	p.Path = r.Host + r.URL.Path
-	//last := urls.Get("last_page")
-	//p.LastPage, err = strconv.Atoi(last)
-	//if err != nil {
-	//	p.LastPage = int(math.Ceil(float64(p.Total)/float64(p.PerPage))) - p.CurrentPage
-	//}
-	//from := urls.Get("from")
-	//p.From, err = strconv.Atoi(from)
-	//if err != nil {
-	//	p.From = (p.CurrentPage - 1) * p.PerPage
-	//}
-	//
-	//to := urls.Get("to")
-	//p.To, err = strconv.Atoi(to)
-	//if err != nil {
-	//	p.To = p.From + p.PerPage
-	//}
-
 	return p
 }
 
