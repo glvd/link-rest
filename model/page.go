@@ -3,6 +3,8 @@ package model
 import (
 	"github.com/goextension/log"
 	"github.com/xormsharp/xorm"
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 	"math"
 	"net/http"
 	"strconv"
@@ -76,11 +78,12 @@ func (p *Paginator) parse(r *http.Request) *Paginator {
 	return p
 }
 
-func (p *Paginator) Find(session *xorm.Session) (*Paginator, error) {
-	count, err := session.Count()
-	log.Infow("count", "error", err, "count", count)
-	if err != nil {
-		return nil, err
+func (p *Paginator) Find(db *gorm.DB) (*Paginator, error) {
+	var count int64
+	tx := db.Count(&count)
+	log.Infow("count", "error", tx.Error, "count", count)
+	if tx.Error != nil {
+		return nil, tx.Error
 	}
 
 	if p.CurrentPage <= 0 || p.CurrentPage > p.LastPage {
@@ -100,9 +103,9 @@ func (p *Paginator) Find(session *xorm.Session) (*Paginator, error) {
 	p.LastPageURL = p.last()
 	p.FirstPageURL = p.first()
 
-	err = session.Limit(p.PerPage, p.From).Find(p.Data)
-	if err != nil {
-		return nil, err
+	tx = db.Preload(clause.Associations).Limit(p.PerPage).Offset(p.From).Find(p.Data)
+	if tx.Error != nil {
+		return nil, tx.Error
 	}
 	return p, nil
 }

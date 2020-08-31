@@ -5,11 +5,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/goextension/tool"
 	"github.com/google/uuid"
-	"github.com/xormsharp/xorm"
+	"gorm.io/gorm"
 	"testing"
 )
 
-var testdb *xorm.Engine
+var testdb *gorm.DB
 
 func init() {
 	cfg := db.ParseFromMap(nil)
@@ -24,18 +24,12 @@ func generateTestMedia(id string) *Media {
 	if id == "" {
 		id = uuid.New().String()
 	}
-	infoID := uuid.New().String()
-	fileID := uuid.New().String()
 	return &Media{
 		BaseModel: BaseModel{
 			ID: id,
 		},
-		Root:   "hash_" + tool.GenerateRandomString(16),
-		InfoID: infoID,
+		Root: "hash_" + tool.GenerateRandomString(16),
 		Info: Info{
-			BaseModel: BaseModel{
-				ID: infoID,
-			},
 			VideoNo:      "no_" + tool.GenerateRandomString(6, tool.RandomNum),
 			Intro:        "intro_" + tool.GenerateRandomString(32),
 			Alias:        nil,
@@ -49,7 +43,7 @@ func generateTestMedia(id string) *Media {
 			Episode:      "",
 			Producer:     "",
 			Publisher:    "",
-			Type:         "",
+			MediaType:    "",
 			Format:       "",
 			Language:     "",
 			Caption:      "",
@@ -63,11 +57,7 @@ func generateTestMedia(id string) *Media {
 			Sample:       nil,
 			Uncensored:   false,
 		},
-		FileID: fileID,
 		File: File{
-			BaseModel: BaseModel{
-				ID: fileID,
-			},
 			ThumbPath:  "",
 			ThumbHash:  "hash_" + tool.GenerateRandomString(32),
 			PosterPath: "",
@@ -83,7 +73,7 @@ func generateTestMedia(id string) *Media {
 
 func TestInsertMedia(t *testing.T) {
 	type args struct {
-		db *xorm.Engine
+		db *gorm.DB
 	}
 	err := Migration(testdb)
 	if err != nil {
@@ -91,17 +81,17 @@ func TestInsertMedia(t *testing.T) {
 	}
 	for i := 0; i < 100; i++ {
 		media := generateTestMedia("")
-		_, err = testdb.Insert(media.File)
-		if err != nil {
-			t.Fatal(err)
-		}
-		_, err = testdb.Insert(media.Info)
-		if err != nil {
-			t.Fatal(err)
-		}
-		_, err = testdb.Insert(media)
-		if err != nil {
-			t.Fatal(err)
+		//_, err = testdb.Create(media.File)
+		//if err != nil {
+		//	t.Fatal(err)
+		//}
+		//_, err = testdb.Insert(media.Info)
+		//if err != nil {
+		//	t.Fatal(err)
+		//}
+		db := testdb.Create(media)
+		if db.Error != nil {
+			t.Fatal(db.Error)
 		}
 	}
 
