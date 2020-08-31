@@ -3,12 +3,15 @@ package rest
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"time"
+
+	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
 	"github.com/glvd/link-rest/db"
 	"github.com/glvd/link-rest/model"
 	v0 "github.com/glvd/link-rest/v0"
-	"github.com/xormsharp/xorm"
-	"net/http"
+	"gorm.io/gorm"
 )
 
 type Service interface {
@@ -20,9 +23,10 @@ type service struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 	engine *gin.Engine
+	cache  *persistence.InMemoryStore
 	port   int
 	serv   http.Server
-	db     *xorm.Engine
+	db     *gorm.DB
 }
 
 func (s *service) Start() error {
@@ -42,7 +46,7 @@ func (s *service) Stop() error {
 func (s *service) registerHandle() {
 	apiDocs(s.engine)
 	groupV0 := s.engine.Group("/api/v0")
-	v0.Register(s.db, groupV0)
+	v0.Register(s.db, groupV0, s.cache)
 }
 
 func New(port int) (Service, error) {
@@ -58,6 +62,7 @@ func New(port int) (Service, error) {
 		port:   port,
 		serv:   http.Server{},
 		engine: gin.Default(),
+		cache:  persistence.NewInMemoryStore(time.Second),
 		db:     db,
 	}, nil
 }

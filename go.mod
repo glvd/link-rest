@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
+	github.com/gin-contrib/cache v1.1.0
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/goextension/extmap v0.0.2
