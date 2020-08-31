@@ -114,8 +114,8 @@ func (p *Paginator) Find(db *gorm.DB) (*Paginator, error) {
 func (p *Paginator) next() string {
 	if p.LastPage > p.CurrentPage+1 {
 		v := url.Values{}
-		page(v, p.CurrentPage+1)
 		p.perPage(v)
+		page(v, p.CurrentPage+1)
 		return p.Path + "?" + v.Encode()
 	}
 	return ""
@@ -124,8 +124,8 @@ func (p *Paginator) next() string {
 func (p *Paginator) prev() string {
 	if p.CurrentPage-1 > 0 {
 		v := url.Values{}
-		page(v, p.CurrentPage-1)
 		p.perPage(v)
+		page(v, p.CurrentPage-1)
 		return p.Path + "?" + v.Encode()
 	}
 	return ""
@@ -134,8 +134,8 @@ func (p *Paginator) prev() string {
 func (p *Paginator) last() string {
 	if p.LastPage > 0 {
 		v := url.Values{}
-		page(v, p.LastPage)
 		p.perPage(v)
+		page(v, p.LastPage)
 		return p.Path + "?" + v.Encode()
 	}
 	return ""
@@ -143,8 +143,8 @@ func (p *Paginator) last() string {
 func (p *Paginator) first() string {
 	if p.Total > 0 {
 		v := url.Values{}
-		page(v, 1)
 		p.perPage(v)
+		page(v, 1)
 		return p.Path + "?" + v.Encode()
 	}
 	return ""
