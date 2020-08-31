@@ -2,7 +2,6 @@ package model
 
 import (
 	"github.com/goextension/log"
-	"github.com/xormsharp/xorm"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 	"math"
@@ -26,10 +25,6 @@ type Paginator struct {
 	Path         string
 	From         int
 	To           int
-}
-
-type Counter interface {
-	Count(session *xorm.Session) (int64, error)
 }
 
 func defaultPage(v interface{}) *Paginator {
