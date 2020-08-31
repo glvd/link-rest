@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"github.com/goextension/log"
 	"github.com/xormsharp/xorm"
 	"math"
@@ -55,8 +54,8 @@ func (p *Paginator) parse(r *http.Request) *Paginator {
 	if err != nil {
 		p.CurrentPage = 1
 	}
-	//fmt.Println("request path", u.Host, u.Hostname(), u.RequestURI(), u.Path)
-	p.Path = r.Host + r.RequestURI
+
+	p.Path = r.Host + r.URL.Path
 	//last := urls.Get("last_page")
 	//p.LastPage, err = strconv.Atoi(last)
 	//if err != nil {
@@ -93,6 +92,9 @@ func (p *Paginator) Find(session *xorm.Session) (*Paginator, error) {
 	p.To = p.From + p.PerPage
 	p.LastPage = int(math.Ceil(float64(p.Total) / float64(p.PerPage)))
 	p.NextPageURL = p.next()
+	p.PrevPageURL = p.prev()
+	p.LastPageURL = p.last()
+	p.FirstPageURL = p.first()
 
 	err = session.Limit(p.PerPage, p.From).Find(p.Data)
 	if err != nil {
@@ -103,7 +105,31 @@ func (p *Paginator) Find(session *xorm.Session) (*Paginator, error) {
 
 func (p *Paginator) next() string {
 	if p.LastPage > p.CurrentPage+1 {
-		return p.Path + fmt.Sprintf("page=%d", p.CurrentPage+1)
+		return p.Path + "?" + page(p.CurrentPage+1)
 	}
 	return ""
+}
+
+func (p *Paginator) prev() string {
+	if p.CurrentPage-1 > 0 {
+		return p.Path + "?" + page(p.CurrentPage-1)
+	}
+	return ""
+}
+
+func (p *Paginator) last() string {
+	if p.LastPage > 0 {
+		return p.Path + "?" + page(p.LastPage)
+	}
+	return ""
+}
+func (p *Paginator) first() string {
+	if p.Total > 0 {
+		return p.Path + "?" + page(1)
+	}
+	return ""
+}
+
+func page(i int) string {
+	return "page=" + strconv.Itoa(i)
 }

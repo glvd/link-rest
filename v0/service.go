@@ -38,9 +38,6 @@ func (s service) total(group *gin.RouterGroup) {
 			return
 		}
 
-		ctx.JSON(http.StatusOK, gin.H{
-			"Status": "success",
-			"Data":   find,
-		})
+		ctx.JSON(http.StatusOK, find)
 	})
 }
