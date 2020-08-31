@@ -33,8 +33,6 @@ func generateTestMedia(id string) *Media {
 			VideoNo:      "no_" + tool.GenerateRandomString(6, tool.RandomNum),
 			Intro:        "intro_" + tool.GenerateRandomString(32),
 			Alias:        nil,
-			Key:          "",
-			M3U8:         "",
 			Role:         nil,
 			Director:     "",
 			Systematics:  "",
