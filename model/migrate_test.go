@@ -77,7 +77,7 @@ func TestInsertMedia(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 1000; i++ {
 		media := generateTestMedia("")
 		//_, err = testdb.Create(media.File)
 		//if err != nil {
