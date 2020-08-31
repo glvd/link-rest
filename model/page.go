@@ -87,6 +87,10 @@ func (p *Paginator) Find(session *xorm.Session) (*Paginator, error) {
 		p.CurrentPage = 1
 	}
 
+	if count == 0 {
+		return p, nil
+	}
+
 	p.Total = count
 	p.From = (p.CurrentPage - 1) * p.PerPage
 	p.To = p.From + p.PerPage
