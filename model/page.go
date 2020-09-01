@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"github.com/goextension/log"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -41,13 +42,16 @@ func Page(r *http.Request, v interface{}) *Paginator {
 
 func (p *Paginator) parse(r *http.Request) *Paginator {
 	var err error
+	fmt.Println("parse query", r.URL.RawQuery)
 	urls := r.URL.Query()
 	perPage := urls.Get("per_page")
+	fmt.Println("->per page", perPage)
 	p.PerPage, err = strconv.Atoi(perPage)
 	if err != nil {
 		p.PerPage = DefaultPaginatorPerPage
 	}
 	current := urls.Get("page")
+	fmt.Println("->current", current)
 	p.CurrentPage, err = strconv.Atoi(current)
 	if err != nil {
 		p.CurrentPage = 1
@@ -65,7 +69,8 @@ func (p *Paginator) Find(db *gorm.DB) (*Paginator, error) {
 		return nil, tx.Error
 	}
 
-	if p.CurrentPage <= 0 || p.CurrentPage > p.LastPage {
+	lastPage := int(math.Ceil(float64(count) / float64(p.PerPage)))
+	if p.CurrentPage <= 0 || p.CurrentPage > lastPage {
 		p.CurrentPage = 1
 	}
 
@@ -76,7 +81,7 @@ func (p *Paginator) Find(db *gorm.DB) (*Paginator, error) {
 	p.Total = count
 	p.From = (p.CurrentPage - 1) * p.PerPage
 	p.To = p.From + p.PerPage
-	p.LastPage = int(math.Ceil(float64(p.Total) / float64(p.PerPage)))
+	p.LastPage = lastPage
 	p.NextPageURL = p.next()
 	p.PrevPageURL = p.prev()
 	p.LastPageURL = p.last()
