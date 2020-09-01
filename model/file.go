@@ -7,6 +7,8 @@ type File struct {
 	KeyHash    string `gorm:"column:key_hash"  json:"key_hash"`      //秘钥
 	ThumbPath  string `gorm:"column:thumb_path" json:"thumb_path"`   //缩略图地址
 	ThumbHash  string `gorm:"column:thumb_hash" json:"thumb_hash"`   //缩略图Hash
+	InfoPath   string `gorm:"column:info_path" json:"info_path"`     //媒体信息地址
+	InfoHash   string `gorm:"column:info_hash" json:"info_hash"`     //媒体信息Hash
 	PosterPath string `gorm:"column:poster_path" json:"poster_path"` //海报地址
 	PosterHash string `gorm:"column:poster_hash" json:"poster_hash"` //海报Hash
 	SourcePath string `gorm:"column:source_path" json:"source_path"` //原片地址

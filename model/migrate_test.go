@@ -63,6 +63,8 @@ func generateTestMedia(id string) *Media {
 			KeyHash:    "",
 			ThumbPath:  root + "/info/thumb.jpg",
 			ThumbHash:  "hash_" + tool.GenerateRandomString(32),
+			InfoPath:   root + "/info/media.nfo",
+			InfoHash:   "hash_" + tool.GenerateRandomString(32),
 			PosterPath: root + "/info/poster.jpg",
 			PosterHash: "hash_" + tool.GenerateRandomString(32),
 			SourcePath: "",
