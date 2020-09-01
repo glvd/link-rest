@@ -18,8 +18,8 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host petstore.swagger.io
-// @BasePath /v2
+// @host localhost
+// @BasePath /api/v0
 func main() {
 	zap.InitZapSugar()
 
