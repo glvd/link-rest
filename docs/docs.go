@@ -36,10 +36,13 @@ var doc = `{
         "/query": {
             "post": {
                 "description": "get all data info from server",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Show data inf",
+                "summary": "Query data inf",
                 "parameters": [
                     {
                         "type": "string",
@@ -386,7 +389,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "47.101.178.76:18080",
+	Host:        "localhost:18080",
 	BasePath:    "/api/v0",
 	Schemes:     []string{},
 	Title:       "Swagger Example API",

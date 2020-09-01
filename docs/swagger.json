@@ -15,16 +15,19 @@
         },
         "version": "1.0"
     },
-    "host": "47.101.178.76:18080",
+    "host": "localhost:18080",
     "basePath": "/api/v0",
     "paths": {
         "/query": {
             "post": {
                 "description": "get all data info from server",
+                "consumes": [
+                    "application/x-www-form-urlencoded"
+                ],
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Show data inf",
+                "summary": "Query data inf",
                 "parameters": [
                     {
                         "type": "string",

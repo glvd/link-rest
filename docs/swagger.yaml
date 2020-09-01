@@ -164,7 +164,7 @@ definitions:
     items:
       type: string
     type: array
-host: 47.101.178.76:18080
+host: localhost:18080
 info:
   contact:
     email: support@swagger.io
@@ -180,6 +180,8 @@ info:
 paths:
   /query:
     post:
+      consumes:
+      - application/x-www-form-urlencoded
       description: get all data info from server
       parameters:
       - description: search from video number
@@ -216,7 +218,7 @@ paths:
                     $ref: '#/definitions/model.Media'
                   type: array
               type: object
-      summary: Show data inf
+      summary: Query data inf
   /show:
     get:
       description: get all data info from server

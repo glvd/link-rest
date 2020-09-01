@@ -56,8 +56,9 @@ func (s service) show(group *gin.RouterGroup) {
 }
 
 // Show godoc
-// @Summary Show data inf
+// @Summary Query data inf
 // @Description get all data info from server
+// @Accept x-www-form-urlencoded
 // @Param video_no formData string false "search from video number"
 // @Param intro formData string false "search from intro"
 // @Param hash formData string false "search with hash code"
@@ -67,12 +68,11 @@ func (s service) show(group *gin.RouterGroup) {
 // @Success 200 {object} model.Paginator{data=[]model.Media}
 // @Router /query [post]
 func (s service) query(group *gin.RouterGroup) {
-	group.POST("/query", cache.CachePage(s.cache, time.Minute, func(ctx *gin.Context) {
+	group.POST("/query", func(ctx *gin.Context) {
 		page := model.Page(ctx.Request, new([]model.Media))
 		m := s.db.Model(model.Media{})
 
 		//todo: add more query arguments
-
 		if ctx.PostForm("video_no") != "" {
 			infos := s.db.Model(model.Info{}).Where("video_no = (?)", ctx.PostForm("video_no")).Select("id")
 			m = m.Where("media.info_id in (?)", infos)
@@ -84,11 +84,13 @@ func (s service) query(group *gin.RouterGroup) {
 		}
 
 		if ctx.PostForm("hash") != "" {
-			files := s.db.Model(model.File{}).Where("thumb_hash = (?)", ctx.PostForm("hash")).
+			files := s.db.Model(model.File{}).Where("root_hash = (?)", ctx.PostForm("hash")).
+				Or("thumb_hash = (?)", ctx.PostForm("hash")).
 				Or("poster_hash = (?)", ctx.PostForm("hash")).
 				Or("source_hash = (?)", ctx.PostForm("hash")).
-				Or("m3u8_hash = (?)", ctx.PostForm("hash")).Select("id")
-			m = m.Where("media.file_id in (?)", files).Or("root = (?)", ctx.PostForm("hash"))
+				Or("m3u8_hash = (?)", ctx.PostForm("hash")).
+				Select("id")
+			m = m.Where("media.file_id in (?)", files)
 		}
 
 		find, err := page.Find(m)
@@ -99,5 +101,5 @@ func (s service) query(group *gin.RouterGroup) {
 		}
 
 		ctx.JSON(http.StatusOK, find)
-	}))
+	})
 }
