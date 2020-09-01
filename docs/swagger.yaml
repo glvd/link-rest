@@ -172,6 +172,33 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /query:
+    post:
+      description: get all data info from server
+      parameters:
+      - description: give your selected page
+        in: query
+        name: page
+        type: string
+      - description: give your want show lists number on per page
+        in: query
+        name: per_page
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Paginator'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Media'
+                  type: array
+              type: object
+      summary: Show data inf
   /show:
     get:
       description: get all data info from server
@@ -180,11 +207,15 @@ paths:
         in: query
         name: page
         type: string
+      - description: give your want show lists number on per page
+        in: query
+        name: per_page
+        type: string
       produces:
       - application/json
       responses:
         "200":
-          description: desc
+          description: OK
           schema:
             allOf:
             - $ref: '#/definitions/model.Paginator'

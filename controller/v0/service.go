@@ -55,6 +55,14 @@ func (s service) show(group *gin.RouterGroup) {
 	}))
 }
 
+// Show godoc
+// @Summary Show data inf
+// @Description get all data info from server
+// @Param page query string false "give your selected page"
+// @Param per_page query string false "give your want show lists number on per page"
+// @Produce  json
+// @Success 200 {object} model.Paginator{data=[]model.Media}
+// @Router /query [post]
 func (s service) query(group *gin.RouterGroup) {
 	group.POST("/query", cache.CachePage(s.cache, time.Minute, func(ctx *gin.Context) {
 		page := model.Page(ctx.Request, new([]model.Media))
