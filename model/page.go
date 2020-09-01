@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"github.com/goextension/log"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -53,7 +54,7 @@ func (p *Paginator) parse(r *http.Request) *Paginator {
 	if err != nil {
 		p.CurrentPage = 1
 	}
-	log.Debugw("parse query", "raw", r.URL.RawQuery, "per page", perPage, "page", current)
+	log.Infow("parse query", "raw", r.URL.RawQuery, "per page", perPage, "page", current)
 	p.Path = r.Host + r.URL.Path
 	return p
 }
@@ -76,12 +77,13 @@ func (p *Paginator) Find(db *gorm.DB) (*Paginator, error) {
 	//	p.CurrentPage = 1
 	//}
 	p.Total = count
-	p.From = (p.CurrentPage - 1) * p.PerPage
-	p.To = p.From + p.PerPage
 	p.LastPage = int(math.Ceil(float64(p.Total) / float64(p.PerPage)))
 	if p.CurrentPage <= 0 || p.CurrentPage > p.LastPage {
 		p.CurrentPage = 1
 	}
+	p.From = (p.CurrentPage - 1) * p.PerPage
+	p.To = p.From + p.PerPage
+	fmt.Println("current", p.CurrentPage)
 	p.NextPageURL = p.next()
 	p.PrevPageURL = p.prev()
 	p.LastPageURL = p.last()
