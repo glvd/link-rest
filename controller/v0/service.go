@@ -34,7 +34,7 @@ func Register(db *gorm.DB, group *gin.RouterGroup, cache *persistence.InMemorySt
 }
 
 // Show godoc
-// @Summary Show data inf
+// @Summary Show data information
 // @Description get all data info from server
 // @Param page query string false "give your selected page"
 // @Param per_page query string false "give your want show lists number on per page"
@@ -56,7 +56,7 @@ func (s service) show(group *gin.RouterGroup) {
 }
 
 // Show godoc
-// @Summary Query data inf
+// @Summary Query data information
 // @Description get all data info from server
 // @Accept x-www-form-urlencoded
 // @Param video_no formData string false "search from video number"
