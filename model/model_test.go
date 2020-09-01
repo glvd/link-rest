@@ -20,7 +20,6 @@ func (p *repo) Create(id uuid.UUID, vn string) error {
 		BaseModel: BaseModel{
 			ID: id.String(),
 		},
-		Root: vn,
 	}
 	if _, err := p.db.Insert(media); err != nil {
 		return err

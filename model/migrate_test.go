@@ -24,11 +24,13 @@ func generateTestMedia(id string) *Media {
 	if id == "" {
 		id = uuid.New().String()
 	}
+
+	root := "hash_" + tool.GenerateRandomString(32)
 	return &Media{
 		BaseModel: BaseModel{
 			ID: id,
 		},
-		Root: "hash_" + tool.GenerateRandomString(16),
+
 		Info: Info{
 			VideoNo:      "no_" + tool.GenerateRandomString(6, tool.RandomNum),
 			Intro:        "intro_" + tool.GenerateRandomString(32),
@@ -56,13 +58,17 @@ func generateTestMedia(id string) *Media {
 			Uncensored:   false,
 		},
 		File: File{
-			ThumbPath:  "",
+			RootHash:   root,
+			KeyPath:    "",
+			KeyHash:    "",
+			ThumbPath:  root + "/info/thumb.jpg",
 			ThumbHash:  "hash_" + tool.GenerateRandomString(32),
-			PosterPath: "",
+			PosterPath: root + "/info/poster.jpg",
 			PosterHash: "hash_" + tool.GenerateRandomString(32),
 			SourcePath: "",
 			SourceHash: "hash_" + tool.GenerateRandomString(32),
-			M3U8Path:   "",
+			M3U8Index:  "media.m3u8",
+			M3U8Path:   root + "/media",
 			M3U8Hash:   "hash_" + tool.GenerateRandomString(32),
 		},
 	}
