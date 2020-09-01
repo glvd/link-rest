@@ -71,10 +71,6 @@ func (p *Paginator) Find(db *gorm.DB) (*Paginator, error) {
 		return p, nil
 	}
 
-	//lastPage := int(math.Ceil(float64(count) / float64(p.PerPage)))
-	//if p.CurrentPage <= 0 || p.CurrentPage > lastPage {
-	//	p.CurrentPage = 1
-	//}
 	p.Total = count
 	p.LastPage = int(math.Ceil(float64(p.Total) / float64(p.PerPage)))
 	if p.CurrentPage <= 0 || p.CurrentPage > p.LastPage {
