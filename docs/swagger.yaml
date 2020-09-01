@@ -1,5 +1,164 @@
-basePath: /v2
-host: petstore.swagger.io
+basePath: /api/v0
+definitions:
+  model.File:
+    properties:
+      key_hash:
+        description: 秘钥
+        type: string
+      key_path:
+        description: 秘钥
+        type: string
+      m3u8_hash:
+        description: 切片Hash
+        type: string
+      m3u8_index:
+        description: M3U8名
+        type: string
+      m3u8_path:
+        description: 切片地址
+        type: string
+      poster_hash:
+        description: 海报Hash
+        type: string
+      poster_path:
+        description: 海报地址
+        type: string
+      root_hash:
+        description: 跟索引
+        type: string
+      source_hash:
+        description: 原片Hash
+        type: string
+      source_path:
+        description: 原片地址
+        type: string
+      thumb_hash:
+        description: 缩略图Hash
+        type: string
+      thumb_path:
+        description: 缩略图地址
+        type: string
+    type: object
+  model.Info:
+    properties:
+      alias:
+        $ref: '#/definitions/model.StringArray'
+        description: 别名，片名
+        type: object
+      caption:
+        description: 字幕
+        type: string
+      director:
+        description: 导演
+        type: string
+      episode:
+        description: 集数
+        type: string
+      format:
+        description: 输出格式：3D，2D,VR(VR格式：Half-SBS：左右半宽,Half-OU：上下半高,SBS：左右全宽)
+        type: string
+      group:
+        description: 分组
+        type: string
+      index:
+        description: 索引
+        type: string
+      intro:
+        description: 简介
+        type: string
+      language:
+        description: 语言
+        type: string
+      length:
+        description: 时长
+        type: string
+      media_type:
+        description: 类型：film，FanDrama
+        type: string
+      producer:
+        description: 生产商
+        type: string
+      publisher:
+        description: 发行商
+        type: string
+      release_date:
+        description: 发行日期
+        type: string
+      role:
+        $ref: '#/definitions/model.StringArray'
+        description: 主演
+        type: object
+      sample:
+        $ref: '#/definitions/model.StringArray'
+        description: 样板图
+        type: object
+      season:
+        description: 季
+        type: string
+      series:
+        description: 系列
+        type: string
+      sharpness:
+        description: 清晰度
+        type: string
+      systematics:
+        description: 分级
+        type: string
+      tags:
+        $ref: '#/definitions/model.StringArray'
+        description: 标签
+        type: object
+      total_episode:
+        description: 总集数
+        type: string
+      uncensored:
+        description: 有码,无码
+        type: boolean
+      video_no:
+        description: 编号
+        type: string
+    type: object
+  model.Media:
+    properties:
+      file:
+        $ref: '#/definitions/model.File'
+        type: object
+      info:
+        $ref: '#/definitions/model.Info'
+        type: object
+    type: object
+  model.Paginator:
+    properties:
+      current_page:
+        type: integer
+      data:
+        type: object
+      first_page_url:
+        type: string
+      from:
+        type: integer
+      last_page:
+        type: integer
+      last_page_url:
+        type: string
+      next_page_url:
+        type: string
+      path:
+        type: string
+      per_page:
+        type: integer
+      prev_page_url:
+        type: string
+      to:
+        type: integer
+      total:
+        type: integer
+    type: object
+  model.StringArray:
+    items:
+      type: string
+    type: array
+host: localhost:18080
 info:
   contact:
     email: support@swagger.io
@@ -12,5 +171,28 @@ info:
   termsOfService: http://swagger.io/terms/
   title: Swagger Example API
   version: "1.0"
-paths: {}
+paths:
+  /show:
+    get:
+      description: get all data info from server
+      parameters:
+      - description: give your selected page
+        in: query
+        name: page
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: desc
+          schema:
+            allOf:
+            - $ref: '#/definitions/model.Paginator'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/model.Media'
+                  type: array
+              type: object
+      summary: Show data inf
 swagger: "2.0"

@@ -29,14 +29,21 @@ func FailedJSON(ctx *gin.Context, msg string) {
 func Register(db *gorm.DB, group *gin.RouterGroup, cache *persistence.InMemoryStore) {
 	_v0.db = db
 	_v0.cache = cache
-	_v0.total(group)
+	_v0.show(group)
 	_v0.query(group)
 }
 
-func (s service) total(group *gin.RouterGroup) {
+// Show godoc
+// @Summary Show data inf
+// @Description get all data info from server
+// @Param page query string false "give your selected page"
+// @Param per_page query string false "give your want show lists number on per page"
+// @Produce  json
+// @Success 200 {object} model.Paginator{data=[]model.Media}
+// @Router /show [get]
+func (s service) show(group *gin.RouterGroup) {
 	group.GET("/show", cache.CachePage(s.cache, time.Minute, func(ctx *gin.Context) {
 		page := model.Page(ctx.Request, new([]model.Media))
-
 		find, err := page.Find(s.db.Model(model.Media{}))
 		if err != nil {
 			log.Errorw("find data error", "error", err)

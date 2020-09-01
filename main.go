@@ -1,7 +1,7 @@
 package main
 
 import (
-	rest "github.com/glvd/link-rest"
+	c "github.com/glvd/link-rest/controller"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/goextension/log/zap"
 )
@@ -18,12 +18,12 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host localhost
+// @host localhost:18080
 // @BasePath /api/v0
 func main() {
 	zap.InitZapSugar()
 
-	rest, err := rest.New(18080)
+	rest, err := c.New(18080)
 	if err != nil {
 		panic(err)
 	}

@@ -1,3 +1,3 @@
-package rest
+package controller
 
 const Version = "v0"

@@ -1,4 +1,4 @@
-package rest
+package controller
 
 import (
 	"testing"
@@ -12,7 +12,7 @@ func TestNew(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want Service
+		want Controller
 	}{
 		{
 			name: "",

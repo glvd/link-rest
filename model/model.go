@@ -13,11 +13,11 @@ import (
 type StringArray []string
 
 type BaseModel struct {
-	ID        string         `gorm:"id primarykey default:uuid_generate_v3() comment(默认主键)"`
-	CreatedAt time.Time      `gorm:"created_at comment(创建时间)"`
-	UpdatedAt time.Time      `gorm:"updated_at comment(更新时间)" `
-	DeletedAt gorm.DeletedAt `gorm:"updated_at index comment(删除时间)"`
-	Version   int            `gorm:"version comment(版本)"`
+	ID        string         `gorm:"id primarykey default:uuid_generate_v3() comment(默认主键)" swaggerignore:"true"`
+	CreatedAt time.Time      `gorm:"created_at comment(创建时间)" swaggerignore:"true"`
+	UpdatedAt time.Time      `gorm:"updated_at comment(更新时间)" swaggerignore:"true"`
+	DeletedAt gorm.DeletedAt `gorm:"updated_at index comment(删除时间)" swaggerignore:"true"`
+	Version   int            `gorm:"version comment(版本)" swaggerignore:"true"`
 }
 
 //func (model *BaseModel) BeforeInsert() {

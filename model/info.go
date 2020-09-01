@@ -1,7 +1,7 @@
 package model
 
 type Info struct {
-	BaseModel    `json:"-"`
+	BaseModel    `json:"-" swaggerignore:"true"`
 	VideoNo      string      `gorm:"column:video_no" json:"video_no"`           //编号
 	Intro        string      `gorm:"column:intro;size:2048" json:"intro"`       //简介
 	Alias        StringArray `gorm:"column:alias" json:"alias"`                 //别名，片名

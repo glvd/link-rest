@@ -1,4 +1,4 @@
-package rest
+package controller
 
 import (
 	"context"
@@ -8,18 +8,18 @@ import (
 
 	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
+	v0 "github.com/glvd/link-rest/controller/v0"
 	"github.com/glvd/link-rest/db"
 	"github.com/glvd/link-rest/model"
-	v0 "github.com/glvd/link-rest/v0"
 	"gorm.io/gorm"
 )
 
-type Service interface {
+type Controller interface {
 	Start() error
 	Stop() error
 }
 
-type service struct {
+type controller struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 	engine *gin.Engine
@@ -29,7 +29,7 @@ type service struct {
 	db     *gorm.DB
 }
 
-func (s *service) Start() error {
+func (s *controller) Start() error {
 	if err := model.Migration(s.db); err != nil {
 		return err
 	}
@@ -39,24 +39,24 @@ func (s *service) Start() error {
 	return s.serv.ListenAndServe()
 }
 
-func (s *service) Stop() error {
+func (s *controller) Stop() error {
 	return s.serv.Close()
 }
 
-func (s *service) registerHandle() {
+func (s *controller) registerHandle() {
 	apiDocs(s.engine)
 	groupV0 := s.engine.Group("/api/v0")
 	v0.Register(s.db, groupV0, s.cache)
 }
 
-func New(port int) (Service, error) {
+func New(port int) (Controller, error) {
 	ctx, cancel := context.WithCancel(context.TODO())
 	dbcfg := db.ParseFromMap(nil)
 	db, err := db.New(dbcfg)
 	if err != nil {
 		return nil, err
 	}
-	return &service{
+	return &controller{
 		ctx:    ctx,
 		cancel: cancel,
 		port:   port,
