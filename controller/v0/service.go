@@ -58,6 +58,9 @@ func (s service) show(group *gin.RouterGroup) {
 // Show godoc
 // @Summary Show data inf
 // @Description get all data info from server
+// @Param video_no formData string false "search from video number"
+// @Param intro formData string false "search from intro"
+// @Param hash formData string false "search with hash code"
 // @Param page query string false "give your selected page"
 // @Param per_page query string false "give your want show lists number on per page"
 // @Produce  json

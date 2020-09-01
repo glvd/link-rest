@@ -2,6 +2,12 @@ basePath: /api/v0
 definitions:
   model.File:
     properties:
+      info_hash:
+        description: 媒体信息Hash
+        type: string
+      info_path:
+        description: 媒体信息地址
+        type: string
       key_hash:
         description: 秘钥
         type: string
@@ -158,7 +164,7 @@ definitions:
     items:
       type: string
     type: array
-host: localhost:18080
+host: 47.101.178.76:18080
 info:
   contact:
     email: support@swagger.io
@@ -176,6 +182,18 @@ paths:
     post:
       description: get all data info from server
       parameters:
+      - description: search from video number
+        in: formData
+        name: video_no
+        type: string
+      - description: search from intro
+        in: formData
+        name: intro
+        type: string
+      - description: search with hash code
+        in: formData
+        name: hash
+        type: string
       - description: give your selected page
         in: query
         name: page

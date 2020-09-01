@@ -43,6 +43,24 @@ var doc = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "description": "search from video number",
+                        "name": "video_no",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search from intro",
+                        "name": "intro",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "search with hash code",
+                        "name": "hash",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
                         "description": "give your selected page",
                         "name": "page",
                         "in": "query"
@@ -130,6 +148,14 @@ var doc = `{
         "model.File": {
             "type": "object",
             "properties": {
+                "info_hash": {
+                    "description": "媒体信息Hash",
+                    "type": "string"
+                },
+                "info_path": {
+                    "description": "媒体信息地址",
+                    "type": "string"
+                },
                 "key_hash": {
                     "description": "秘钥",
                     "type": "string"
@@ -360,7 +386,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "localhost:18080",
+	Host:        "47.101.178.76:18080",
 	BasePath:    "/api/v0",
 	Schemes:     []string{},
 	Title:       "Swagger Example API",
