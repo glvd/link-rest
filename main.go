@@ -1,3 +1,4 @@
+//go:generate swag init
 package main
 
 import (
@@ -18,7 +19,7 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host localhost:18080
+// @host 47.101.178.76:18080
 // @BasePath /api/v0
 func main() {
 	zap.InitZapSugar()
