@@ -11,6 +11,8 @@ require (
 	github.com/goextension/log v0.0.2
 	github.com/goextension/tool v0.0.2
 	github.com/google/uuid v1.1.1
+	github.com/ipfs/go-ipfs-http-client v0.1.0
+	github.com/ipfs/interface-go-ipfs-core v0.4.0
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.7
 	github.com/xormsharp/builder v0.3.8 // indirect
