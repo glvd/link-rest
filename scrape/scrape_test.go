@@ -3,6 +3,7 @@ package scrape
 import (
 	"context"
 	"github.com/glvd/link-rest/db"
+	"github.com/glvd/link-rest/model"
 	"github.com/goextension/log/zap"
 	httpapi "github.com/ipfs/go-ipfs-http-client"
 	"gorm.io/gorm"
@@ -29,6 +30,10 @@ func init() {
 }
 
 func Test_scrape_ParseHash(t *testing.T) {
+	err := model.Migration(testdb)
+	if err != nil {
+		t.Fatal(err)
+	}
 	type fields struct {
 		api *httpapi.HttpApi
 		db  *gorm.DB
@@ -48,7 +53,16 @@ func Test_scrape_ParseHash(t *testing.T) {
 			fields: fields{},
 			args: args{
 				ctx:  context.TODO(),
-				hash: "QmUfgJNGaBHEXJ8X5hv9VntZXRsmunKPJn9uXyDULmKg1P",
+				hash: "QmanRrB2r4TsT76sjHEsizQiwsG1Pa6gEGk3AXKPWaXHLa",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmWFXcwjmDKb2WRNzJs33RTG6KYyyNjAmfKiyL1ZSbLSMK",
 			},
 			wantErr: false,
 		},
