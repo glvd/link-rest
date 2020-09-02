@@ -2,6 +2,7 @@ package model
 
 type Info struct {
 	BaseModel    `json:"-" swaggerignore:"true"`
+	Title        string      `gorm:"column:title" json:"title"`                 //标题
 	VideoNo      string      `gorm:"column:video_no" json:"video_no"`           //编号
 	Intro        string      `gorm:"column:intro;size:2048" json:"intro"`       //简介
 	Alias        StringArray `gorm:"column:alias" json:"alias"`                 //别名，片名
