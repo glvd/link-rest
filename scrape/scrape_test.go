@@ -66,6 +66,51 @@ func Test_scrape_ParseHash(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmSr2B5Tbnks775dorMAq9T47b6ebFxbnGRe55dMK74XoY",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmW3vvz7pUGwAzdLDDUAiAkNE6yTUxWn7Som6trMzPeMPj",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmU1AoYRMJvnH8T3aw9nQT8kdUX1X2AM3RQSUfbst7tXqT",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmcVgEdKXmjqiht9iLbJzNyRuLJwJWrmct52SunkUfkPGD",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmWEyKaka5VKc21DsaTZsaY1vLaqqMLRrt1ii5ZgXTVL9M",
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
