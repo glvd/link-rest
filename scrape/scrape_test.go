@@ -111,6 +111,60 @@ func Test_scrape_ParseHash(t *testing.T) {
 			},
 			wantErr: false,
 		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmYBprprxEvjqgS37ceG6jJzq2ji4WYnttcCvuM75iB4RF",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmcDz4ZM3k4MWj17P8CPiHBvTJUwaPwsTMUTsXTy5h5xjr",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmaXKETjqUNEcYxf2QfMEQNLmWQsAiRu6CgRWbRTvAMdmK",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmS9uLgrv79brSzzcUqhyRf6CUR3KCxxZD4pZzRGJsGaS6",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmRZfEjYRgYRtAKfsDefqs85sZrhV8VKvGmWiRHh1hoWmV",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "Qmf29JBwVZvBcSx167FzHPPYJCy8gG6xPcDWsJGzPSizxG",
+			},
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
