@@ -62,33 +62,6 @@ func Test_scrape_ParseHash(t *testing.T) {
 			fields: fields{},
 			args: args{
 				ctx:  context.TODO(),
-				hash: "QmWFXcwjmDKb2WRNzJs33RTG6KYyyNjAmfKiyL1ZSbLSMK",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmSr2B5Tbnks775dorMAq9T47b6ebFxbnGRe55dMK74XoY",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmW3vvz7pUGwAzdLDDUAiAkNE6yTUxWn7Som6trMzPeMPj",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
 				hash: "QmU1AoYRMJvnH8T3aw9nQT8kdUX1X2AM3RQSUfbst7tXqT",
 			},
 			wantErr: false,
@@ -162,6 +135,33 @@ func Test_scrape_ParseHash(t *testing.T) {
 			args: args{
 				ctx:  context.TODO(),
 				hash: "Qmf29JBwVZvBcSx167FzHPPYJCy8gG6xPcDWsJGzPSizxG",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmWFXcwjmDKb2WRNzJs33RTG6KYyyNjAmfKiyL1ZSbLSMK",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmSr2B5Tbnks775dorMAq9T47b6ebFxbnGRe55dMK74XoY",
+			},
+			wantErr: false,
+		},
+		{
+			name:   "",
+			fields: fields{},
+			args: args{
+				ctx:  context.TODO(),
+				hash: "QmW3vvz7pUGwAzdLDDUAiAkNE6yTUxWn7Som6trMzPeMPj",
 			},
 			wantErr: false,
 		},
