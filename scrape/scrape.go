@@ -18,6 +18,7 @@ import (
 )
 
 type Scraper interface {
+	ParseHash(ctx context.Context, hash string) error
 }
 
 type scrape struct {
@@ -39,6 +40,13 @@ func New(path string) (Scraper, error) {
 		api: api,
 		db:  db,
 	}, nil
+}
+
+func NewScraper(api *httpapi.HttpApi, db *gorm.DB) Scraper {
+	return &scrape{
+		api: api,
+		db:  db,
+	}
 }
 
 func (s *scrape) ParseHash(ctx context.Context, hash string) error {
