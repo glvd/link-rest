@@ -16,7 +16,7 @@ var rootCmd = &cobra.Command{
 }
 
 func main() {
-	rootCmd.AddCommand(subScrape())
+	rootCmd.AddCommand(subDaemon(), subScrape())
 	if err := rootCmd.Execute(); err != nil {
 		return
 	}
