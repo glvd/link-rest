@@ -15,6 +15,7 @@ require (
 	github.com/ipfs/go-ipfs-files v0.0.8
 	github.com/ipfs/go-ipfs-http-client v0.1.0
 	github.com/ipfs/interface-go-ipfs-core v0.4.0
+	github.com/spf13/cobra v0.0.5
 	github.com/swaggo/gin-swagger v1.2.0
 	github.com/swaggo/swag v1.6.7
 	github.com/xormsharp/builder v0.3.8 // indirect
