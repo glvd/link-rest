@@ -12,7 +12,7 @@ func defaultConfig() *Config {
 
 type Options func(config *Config)
 
-func ParseConfig(opts ...Options) *Config {
+func ParseConfig(opts []Options) *Config {
 	cfg := defaultConfig()
 	for _, opt := range opts {
 		opt(cfg)
