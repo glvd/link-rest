@@ -14,16 +14,17 @@ import (
 	"syscall"
 )
 
-var path *string
+var path string
 
 func main() {
-	flag.StringVar(path, "path", "scrape.txt", "scrape hash from list and input into database ")
+	flag.StringVar(&path, "path", "scrape.txt", "scrape hash from list and input into database ")
 	flag.Parse()
 
 	ctx, cf := context.WithCancel(context.TODO())
 	parseDone := make(chan bool)
 	go func(ctx context.Context, done chan<- bool) {
-		openedFile, err := os.Open(*path)
+		defer close(done)
+		openedFile, err := os.Open(path)
 		if err != nil {
 			return
 		}
@@ -57,7 +58,6 @@ func main() {
 				}
 			}
 		}
-		done <- true
 	}(ctx, parseDone)
 
 	interrupts := make(chan os.Signal)
@@ -69,5 +69,4 @@ func main() {
 	case <-parseDone:
 		fmt.Println("system exit with parse hash done")
 	}
-
 }
