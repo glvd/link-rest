@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+var DefaultConfigName = "cfgLink"
+
 type Config struct {
 	Port int //handle port
 }
