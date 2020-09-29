@@ -18,24 +18,7 @@ import (
 func subScrape() *cobra.Command {
 	var path string
 	cmd := &cobra.Command{
-		Use:                    "scrape",
-		Aliases:                nil,
-		SuggestFor:             nil,
-		Short:                  "",
-		Long:                   "",
-		Example:                "",
-		ValidArgs:              nil,
-		Args:                   nil,
-		ArgAliases:             nil,
-		BashCompletionFunction: "",
-		Deprecated:             "",
-		Hidden:                 false,
-		Annotations:            nil,
-		Version:                "",
-		PersistentPreRun:       nil,
-		PersistentPreRunE:      nil,
-		PreRun:                 nil,
-		PreRunE:                nil,
+		Use: "scrape",
 		Run: func(cmd *cobra.Command, args []string) {
 			zap.InitZapSugar()
 			ctx, cf := context.WithCancel(context.TODO())
@@ -88,20 +71,6 @@ func subScrape() *cobra.Command {
 				fmt.Println("system exit with parse hash done")
 			}
 		},
-		RunE:                       nil,
-		PostRun:                    nil,
-		PostRunE:                   nil,
-		PersistentPostRun:          nil,
-		PersistentPostRunE:         nil,
-		SilenceErrors:              false,
-		SilenceUsage:               false,
-		DisableFlagParsing:         false,
-		DisableAutoGenTag:          false,
-		DisableFlagsInUseLine:      false,
-		DisableSuggestions:         false,
-		SuggestionsMinimumDistance: 0,
-		TraverseChildren:           false,
-		FParseErrWhitelist:         cobra.FParseErrWhitelist{},
 	}
 	cmd.Flags().StringVarP(&path, "path", "p", "scrape.txt", "scrape hash from list and input into database")
 	return cmd
