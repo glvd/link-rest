@@ -20,8 +20,7 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-	testdb = engine
-
+	testdb = engine.Debug()
 	api, err := httpapi.NewLocalApi()
 	if err != nil {
 		return

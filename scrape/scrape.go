@@ -123,6 +123,16 @@ func (s *scrape) ParseHash(ctx context.Context, hash string) error {
 		Info: info,
 		File: f,
 	}
+	var count int64
+	retCount := s.db.Model(model.File{}).Where(model.File{RootHash: f.RootHash}).Count(&count)
+	if retCount.Error != nil {
+		return retCount.Error
+	}
+	if count > 0 {
+		log.Infof("file exist:%+v skip", f.RootHash)
+		return nil
+	}
+
 	ret := s.db.Create(&media)
 	if ret.Error != nil {
 		return ret.Error
