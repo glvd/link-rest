@@ -50,6 +50,15 @@ func NewScraper(api *httpapi.HttpApi, db *gorm.DB) Scraper {
 }
 
 func (s *scrape) ParseHash(ctx context.Context, hash string) error {
+	var count int64
+	retCount := s.db.Model(model.File{}).Where(model.File{RootHash: hash}).Count(&count)
+	if retCount.Error != nil {
+		return retCount.Error
+	}
+	if count > 0 {
+		log.Infof("file exist:%+v skip", hash)
+		return nil
+	}
 	ls, err := s.api.Unixfs().Ls(ctx, path.New(hash))
 	if err != nil {
 		return err
@@ -122,15 +131,6 @@ func (s *scrape) ParseHash(ctx context.Context, hash string) error {
 	media := model.Media{
 		Info: info,
 		File: f,
-	}
-	var count int64
-	retCount := s.db.Model(model.File{}).Where(model.File{RootHash: f.RootHash}).Count(&count)
-	if retCount.Error != nil {
-		return retCount.Error
-	}
-	if count > 0 {
-		log.Infof("file exist:%+v skip", f.RootHash)
-		return nil
 	}
 
 	ret := s.db.Create(&media)
