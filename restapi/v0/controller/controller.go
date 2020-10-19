@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/glvd/link-rest/db"
-	v0 "github.com/glvd/link-rest/restapi/v0"
+	api "github.com/glvd/link-rest/restapi"
 	"github.com/glvd/link-rest/restapi/v0/model"
 
 	"github.com/gin-contrib/cache/persistence"
@@ -46,8 +46,8 @@ func (s *controller) Stop() error {
 
 func (s *controller) registerHandle() {
 	apiDocs(s.engine)
-	groupV0 := s.engine.Group("/api/v0")
-	v0.Register(s.db, groupV0, s.cache)
+	groupV0 := s.engine.Group("/api/api")
+	api.Register(s.db, groupV0, s.cache)
 }
 
 func New(port int) (Controller, error) {
