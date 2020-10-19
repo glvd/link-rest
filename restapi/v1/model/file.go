@@ -1,5 +1,7 @@
 package model
 
+import v1 "github.com/glvd/link-rest/restapi/v1"
+
 type File struct {
 	BaseModel  `xorm:"extends" json:"-" swaggerignore:"true"`
 	RootHash   string `gorm:"column:root_hash;unique" json:"root_hash"` //跟索引
@@ -20,4 +22,8 @@ type File struct {
 
 func init() {
 	RegisterTable(File{})
+}
+
+func (m File) TableName() string {
+	return "file" + "_" + v1.Version
 }

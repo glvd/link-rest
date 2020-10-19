@@ -1,5 +1,7 @@
 package model
 
+import v1 "github.com/glvd/link-rest/restapi/v1"
+
 type Info struct {
 	BaseModel    `json:"-" swaggerignore:"true"`
 	Title        string      `gorm:"column:title" json:"title"`                 //标题
@@ -31,4 +33,8 @@ type Info struct {
 
 func init() {
 	RegisterTable(Info{})
+}
+
+func (m Info) TableName() string {
+	return "info" + "_" + v1.Version
 }

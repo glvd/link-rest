@@ -10,6 +10,7 @@ import (
 	"time"
 
 	v0 "github.com/glvd/link-rest/restapi/v0/controller"
+	v1 "github.com/glvd/link-rest/restapi/v1/controller"
 )
 
 type service struct {
@@ -18,7 +19,7 @@ type service struct {
 	c    *controller.Controller
 }
 
-type Service service
+type Service = service
 
 func New(port int) (*Service, error) {
 	eng := gin.Default()
@@ -33,7 +34,7 @@ func New(port int) (*Service, error) {
 		DB:     gormdb,
 	}
 
-	return &Service{
+	return &service{
 		port: port,
 		serv: http.Server{
 			Handler: c.Engine,
@@ -43,11 +44,13 @@ func New(port int) (*Service, error) {
 	}, nil
 }
 
-func (s *service) Init() {
+func (s *service) init() {
 	_ = v0.RegisterHandle(s.c)
+	_ = v1.RegisterHandle(s.c)
 }
 
 func (s *service) Start() error {
+	s.init()
 	return s.serv.ListenAndServe()
 }
 

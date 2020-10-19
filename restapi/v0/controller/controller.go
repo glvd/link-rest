@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/gin-contrib/cache"
 	"github.com/glvd/link-rest/restapi/common/controller"
+	v0 "github.com/glvd/link-rest/restapi/v0"
 	"github.com/goextension/log"
 	"net/http"
 	"time"
@@ -16,7 +17,7 @@ func RegisterHandle(c *controller.Controller) error {
 	if err := model.Migration(c.DB); err != nil {
 		return err
 	}
-	group := c.Engine.Group(Version)
+	group := c.Engine.Group(v0.Version)
 	Show(c, group)
 	Query(c, group)
 	return nil
@@ -29,7 +30,7 @@ func RegisterHandle(c *controller.Controller) error {
 // @Param per_page query string false "give your want show lists number on per page"
 // @Produce  json
 // @Success 200 {object} model.Paginator{data=[]model.Media}
-// @Router /show [get]
+// @Router /v0/show [get]
 func Show(c *controller.Controller, group *gin.RouterGroup) {
 	group.GET("/show", cache.CachePage(c.Cache, time.Minute, func(ctx *gin.Context) {
 		page := model.Page(ctx.Request, new([]model.Media))
@@ -55,7 +56,7 @@ func Show(c *controller.Controller, group *gin.RouterGroup) {
 // @Param per_page query string false "give your want show lists number on per page"
 // @Produce  json
 // @Success 200 {object} model.Paginator{data=[]model.Media}
-// @Router /query [post]
+// @Router /v0/query [post]
 func Query(c *controller.Controller, group *gin.RouterGroup) {
 	group.POST("/query", func(ctx *gin.Context) {
 		page := model.Page(ctx.Request, new([]model.Media))

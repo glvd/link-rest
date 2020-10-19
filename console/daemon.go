@@ -1,7 +1,7 @@
 package main
 
 import (
-	c "github.com/glvd/link-rest/restapi/v0/controller"
+	service "github.com/glvd/link-rest/restapi"
 	"github.com/goextension/log/zap"
 	"github.com/spf13/cobra"
 )
@@ -13,11 +13,13 @@ func subDaemon() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			zap.InitZapSugar()
 
-			rest, err := c.New(port)
+			rest, err := service.New(port)
 			if err != nil {
 				panic(err)
 			}
-			rest.Start()
+			if err := rest.Start(); err != nil {
+				return
+			}
 		},
 	}
 	cmd.Flags().IntVarP(&port, "port", "p", 18080, "set the handle port")
