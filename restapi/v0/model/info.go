@@ -27,7 +27,6 @@ type Info struct {
 	Length       string      `gorm:"column:length" json:"length"`               //时长
 	Sample       StringArray `gorm:"column:sample" json:"sample"`               //样板图
 	Uncensored   bool        `gorm:"column:uncensored" json:"uncensored"`       //有码,无码
-	Category     string      `gorm:"column:category" json:"category"`           //类别
 }
 
 func init() {
