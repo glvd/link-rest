@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/glvd/link-rest/db"
-	"github.com/glvd/link-rest/model"
+	"github.com/glvd/link-rest/restapi/v0/model"
 	"github.com/goextension/log"
 	"github.com/ipfs/go-cid"
 	files "github.com/ipfs/go-ipfs-files"

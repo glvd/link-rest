@@ -7,7 +7,7 @@ import (
 	"github.com/gin-contrib/cache"
 	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
-	"github.com/glvd/link-rest/model"
+	"github.com/glvd/link-rest/restapi/v0/model"
 	"github.com/goextension/log"
 	"gorm.io/gorm"
 )

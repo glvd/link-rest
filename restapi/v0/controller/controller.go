@@ -6,11 +6,12 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/glvd/link-rest/db"
+	v0 "github.com/glvd/link-rest/restapi/v0"
+	"github.com/glvd/link-rest/restapi/v0/model"
+
 	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
-	v0 "github.com/glvd/link-rest/controller/v0"
-	"github.com/glvd/link-rest/db"
-	"github.com/glvd/link-rest/model"
 	"gorm.io/gorm"
 )
 

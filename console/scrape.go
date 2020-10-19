@@ -22,6 +22,7 @@ func subScrape() *cobra.Command {
 		Run: func(cmd *cobra.Command, args []string) {
 			zap.InitZapSugar()
 			ctx, cf := context.WithCancel(context.TODO())
+			defer cf()
 			parseDone := make(chan bool)
 			go func(ctx context.Context, done chan<- bool) {
 				defer close(done)
@@ -65,7 +66,6 @@ func subScrape() *cobra.Command {
 			signal.Notify(interrupts, os.Interrupt, syscall.SIGTERM)
 			select {
 			case <-interrupts:
-				cf()
 				fmt.Println("system exit with system interrupt")
 			case <-parseDone:
 				fmt.Println("system exit with parse hash done")

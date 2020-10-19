@@ -1,7 +1,7 @@
 package main
 
 import (
-	c "github.com/glvd/link-rest/controller"
+	c "github.com/glvd/link-rest/restapi/v0/controller"
 	"github.com/goextension/log/zap"
 	"github.com/spf13/cobra"
 )
