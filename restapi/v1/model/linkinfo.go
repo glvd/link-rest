@@ -6,7 +6,8 @@ import (
 )
 
 type LinkInfo struct {
-	Category string `gorm:"column:category" json:"category"` //类别
+	model.BaseModel `json:"-" swaggerignore:"true"`
+	Category        string `gorm:"column:category" json:"category"` //类别
 }
 
 func init() {
