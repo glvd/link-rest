@@ -4,7 +4,6 @@ import "github.com/glvd/link-rest/restapi/common/model"
 
 type Info struct {
 	model.BaseModel `json:"-" swaggerignore:"true"`
-	Category        string            `gorm:"column:category" json:"category"`           //类别
 	Title           string            `gorm:"column:title" json:"title"`                 //标题
 	VideoNo         string            `gorm:"column:video_no" json:"video_no"`           //编号
 	Intro           string            `gorm:"column:intro;size:2048" json:"intro"`       //简介
@@ -17,7 +16,7 @@ type Info struct {
 	Episode         string            `gorm:"column:episode" json:"episode"`             //集数
 	Producer        string            `gorm:"column:producer" json:"producer"`           //生产商
 	Publisher       string            `gorm:"column:publisher" json:"publisher"`         //发行商
-	MediaType       string            `gorm:"column:media_type" json:"media_type"`       //类型：film，FanDrama
+	MediaType       string            `gorm:"column:media_type" json:"media_type"`       //类型：film,FanDrama,TVDrama,18X
 	Format          string            `gorm:"column:format" json:"format"`               //输出格式：3D，2D,VR(VR格式：Half-SBS：左右半宽,Half-OU：上下半高,SBS：左右全宽)
 	Language        string            `gorm:"column:language" json:"language"`           //语言
 	Caption         string            `gorm:"column:caption" json:"caption"`             //字幕
