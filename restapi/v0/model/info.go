@@ -4,6 +4,7 @@ import "github.com/glvd/link-rest/restapi/common/model"
 
 type Info struct {
 	model.BaseModel `json:"-" swaggerignore:"true"`
+	Category        string            `gorm:"column:category" json:"category"`           //类别
 	Title           string            `gorm:"column:title" json:"title"`                 //标题
 	VideoNo         string            `gorm:"column:video_no" json:"video_no"`           //编号
 	Intro           string            `gorm:"column:intro;size:2048" json:"intro"`       //简介
