@@ -1,69 +1,94 @@
 package controller
 
 import (
-	"context"
-	"fmt"
+	"github.com/gin-contrib/cache"
+	"github.com/glvd/link-rest/restapi/common/controller"
+	"github.com/goextension/log"
 	"net/http"
 	"time"
 
-	"github.com/glvd/link-rest/db"
-	api "github.com/glvd/link-rest/restapi"
 	"github.com/glvd/link-rest/restapi/v0/model"
 
-	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-type Controller interface {
-	Start() error
-	Stop() error
-}
-
-type controller struct {
-	ctx    context.Context
-	cancel context.CancelFunc
-	engine *gin.Engine
-	cache  *persistence.InMemoryStore
-	port   int
-	serv   http.Server
-	db     *gorm.DB
-}
-
-func (s *controller) Start() error {
-	if err := model.Migration(s.db); err != nil {
+func RegisterHandle(c *controller.Controller) error {
+	if err := model.Migration(c.DB); err != nil {
 		return err
 	}
-	s.registerHandle()
-	s.serv.Handler = s.engine
-	s.serv.Addr = fmt.Sprintf("0.0.0.0:%d", s.port)
-	return s.serv.ListenAndServe()
+	group := c.Engine.Group(Version)
+	Show(c, group)
+	Query(c, group)
+	return nil
 }
 
-func (s *controller) Stop() error {
-	return s.serv.Close()
+// Show godoc
+// @Summary Show data information
+// @Description get all data info from server
+// @Param page query string false "give your selected page"
+// @Param per_page query string false "give your want show lists number on per page"
+// @Produce  json
+// @Success 200 {object} model.Paginator{data=[]model.Media}
+// @Router /show [get]
+func Show(c *controller.Controller, group *gin.RouterGroup) {
+	group.GET("/show", cache.CachePage(c.Cache, time.Minute, func(ctx *gin.Context) {
+		page := model.Page(ctx.Request, new([]model.Media))
+		find, err := page.Find(c.DB.Model(model.Media{}))
+		if err != nil {
+			log.Errorw("find data error", "error", err)
+			controller.FailedJSON(ctx, "data not found")
+			return
+		}
+
+		ctx.JSON(http.StatusOK, find)
+	}))
 }
 
-func (s *controller) registerHandle() {
-	apiDocs(s.engine)
-	groupV0 := s.engine.Group("/api/api")
-	api.Register(s.db, groupV0, s.cache)
-}
+// Show godoc
+// @Summary Query data information
+// @Description get all data info from server
+// @Accept x-www-form-urlencoded
+// @Param video_no formData string false "search from video number"
+// @Param intro formData string false "search from intro"
+// @Param hash formData string false "search with hash code"
+// @Param page query string false "give your selected page"
+// @Param per_page query string false "give your want show lists number on per page"
+// @Produce  json
+// @Success 200 {object} model.Paginator{data=[]model.Media}
+// @Router /query [post]
+func Query(c *controller.Controller, group *gin.RouterGroup) {
+	group.POST("/query", func(ctx *gin.Context) {
+		page := model.Page(ctx.Request, new([]model.Media))
+		m := c.DB.Model(model.Media{})
 
-func New(port int) (Controller, error) {
-	ctx, cancel := context.WithCancel(context.TODO())
-	dbcfg := db.ParseFromMap(nil)
-	db, err := db.New(dbcfg)
-	if err != nil {
-		return nil, err
-	}
-	return &controller{
-		ctx:    ctx,
-		cancel: cancel,
-		port:   port,
-		serv:   http.Server{},
-		engine: gin.Default(),
-		cache:  persistence.NewInMemoryStore(time.Second),
-		db:     db,
-	}, nil
+		//todo: add more query arguments
+		if ctx.PostForm("video_no") != "" {
+			infos := c.DB.Model(model.Info{}).Where("video_no = (?)", ctx.PostForm("video_no")).Select("id")
+			m = m.Where("media.info_id in (?)", infos)
+		}
+
+		if ctx.PostForm("intro") != "" {
+			infos := c.DB.Model(model.Info{}).Where("intro like (?)", "%"+ctx.PostForm("intro")+"%").Select("id")
+			m = m.Where("media.info_id in (?)", infos)
+		}
+
+		if ctx.PostForm("hash") != "" {
+			files := c.DB.Model(model.File{}).Where("root_hash = (?)", ctx.PostForm("hash")).
+				Or("thumb_hash = (?)", ctx.PostForm("hash")).
+				Or("poster_hash = (?)", ctx.PostForm("hash")).
+				Or("source_hash = (?)", ctx.PostForm("hash")).
+				Or("m3u8_hash = (?)", ctx.PostForm("hash")).
+				Select("id")
+			m = m.Where("media.file_id in (?)", files)
+		}
+
+		find, err := page.Find(m)
+		if err != nil {
+			log.Errorw("find data error", "error", err)
+			controller.FailedJSON(ctx, "data not found")
+			return
+		}
+
+		ctx.JSON(http.StatusOK, find)
+	})
 }
