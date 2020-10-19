@@ -7,6 +7,7 @@ import (
 
 	"github.com/goextension/extmap"
 	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -57,7 +58,8 @@ func defaultSQLConnect() *SQLConnect {
 }
 
 func New(c Connectable) (*gorm.DB, error) {
-	db, err := gorm.Open(mysql.Open(c.String()), &gorm.Config{})
+
+	db, err := gorm.Open(mysql.Open(c.String()), nil)
 	if err != nil {
 		return nil, fmt.Errorf("connect db error:%w", err)
 	}
@@ -76,4 +78,8 @@ func (c SQLConnect) String() string {
 
 func (c SQLConnect) ConnectParams() (string, string) {
 	return c.Type(), c.String()
+}
+
+func OpenSqlite() {
+	sqlite.Open("linker.db")
 }
