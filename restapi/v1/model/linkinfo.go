@@ -6,6 +6,10 @@ type LinkInfo struct {
 	Category string `gorm:"column:category" json:"category"` //类别
 }
 
+func init() {
+	RegisterTable(LinkInfo{})
+}
+
 func (LinkInfo) TableName() string {
 	return "linkinfo" + "_" + v1.Version
 }
