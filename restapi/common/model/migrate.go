@@ -3,12 +3,17 @@ package model
 import (
 	"fmt"
 	"gorm.io/gorm"
+	"gorm.io/gorm/schema"
 	"reflect"
 )
 
 var migrateTable = map[string]interface{}{}
 
 func RegisterTable(v interface{}) {
+	if t, b := v.(schema.Tabler); b {
+		migrateTable[t.TableName()] = v
+		return
+	}
 	migrateTable[reflect.TypeOf(v).String()] = v
 }
 

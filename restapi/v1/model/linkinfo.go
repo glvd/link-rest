@@ -1,13 +1,16 @@
 package model
 
-import v1 "github.com/glvd/link-rest/restapi/v1"
+import (
+	"github.com/glvd/link-rest/restapi/common/model"
+	v1 "github.com/glvd/link-rest/restapi/v1"
+)
 
 type LinkInfo struct {
 	Category string `gorm:"column:category" json:"category"` //类别
 }
 
 func init() {
-	RegisterTable(LinkInfo{})
+	model.RegisterTable(LinkInfo{})
 }
 
 func (LinkInfo) TableName() string {

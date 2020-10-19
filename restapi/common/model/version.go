@@ -6,3 +6,7 @@ type Version struct {
 	gorm.Model
 	V string
 }
+
+func init() {
+	RegisterTable(Version{})
+}

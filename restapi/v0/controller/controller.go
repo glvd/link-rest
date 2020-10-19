@@ -8,13 +8,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/glvd/link-rest/restapi/v0/model"
+	cm "github.com/glvd/link-rest/restapi/common/model"
+	model "github.com/glvd/link-rest/restapi/v0/model"
 
 	"github.com/gin-gonic/gin"
 )
 
 func RegisterHandle(c *controller.Controller) error {
-	if err := model.Migration(c.DB); err != nil {
+	if err := cm.Migration(c.DB); err != nil {
 		return err
 	}
 	group := c.Engine.Group(v0.Version)
@@ -33,7 +34,7 @@ func RegisterHandle(c *controller.Controller) error {
 // @Router /v0/show [get]
 func Show(c *controller.Controller, group *gin.RouterGroup) {
 	group.GET("/show", cache.CachePage(c.Cache, time.Minute, func(ctx *gin.Context) {
-		page := model.Page(ctx.Request, new([]model.Media))
+		page := cm.Page(ctx.Request, new([]model.Media))
 		find, err := page.Find(c.DB.Model(model.Media{}))
 		if err != nil {
 			log.Errorw("find data error", "error", err)
@@ -59,7 +60,7 @@ func Show(c *controller.Controller, group *gin.RouterGroup) {
 // @Router /v0/query [post]
 func Query(c *controller.Controller, group *gin.RouterGroup) {
 	group.POST("/query", func(ctx *gin.Context) {
-		page := model.Page(ctx.Request, new([]model.Media))
+		page := cm.Page(ctx.Request, new([]model.Media))
 		m := c.DB.Model(model.Media{})
 
 		//todo: add more query arguments

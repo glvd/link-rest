@@ -1,5 +1,7 @@
 package model
 
+import "github.com/glvd/link-rest/restapi/common/model"
+
 type Node struct {
-	BaseModel `json:"-" swaggerignore:"true"`
+	model.BaseModel `json:"-" swaggerignore:"true"`
 }
