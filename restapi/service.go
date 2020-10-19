@@ -1,6 +1,7 @@
 package restapi
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -13,8 +14,11 @@ import (
 )
 
 type service struct {
-	db    *gorm.DB
-	cache *persistence.InMemoryStore
+	Port   int
+	db     *gorm.DB
+	engine *gin.Engine
+	serv   http.Server
+	cache  *persistence.InMemoryStore
 }
 
 var _v0 = &service{}
@@ -102,4 +106,14 @@ func (s service) query(group *gin.RouterGroup) {
 
 		ctx.JSON(http.StatusOK, find)
 	})
+}
+
+func (s *service) Start() error {
+	s.serv.Handler = s.engine
+	s.serv.Addr = fmt.Sprintf("0.0.0.0:%d", s.Port)
+	return s.serv.ListenAndServe()
+}
+
+func (s *service) Stop() error {
+	return s.serv.Close()
 }
