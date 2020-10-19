@@ -3,7 +3,10 @@ package scrape
 import (
 	"context"
 	"github.com/glvd/link-rest/db"
-	"github.com/glvd/link-rest/restapi/v0/model"
+	cm "github.com/glvd/link-rest/restapi/common/model"
+	_ "github.com/glvd/link-rest/restapi/v0/model"
+	_ "github.com/glvd/link-rest/restapi/v1/model"
+
 	"github.com/goextension/log/zap"
 	httpapi "github.com/ipfs/go-ipfs-http-client"
 	"gorm.io/gorm"
@@ -28,8 +31,8 @@ func init() {
 	testapi = api
 }
 
-func Test_scrape_ParseHash(t *testing.T) {
-	err := model.Migration(testdb)
+func TestScrapeParseHash(t *testing.T) {
+	err := cm.Migration(testdb)
 	if err != nil {
 		t.Fatal(err)
 	}
