@@ -34,6 +34,7 @@ func RegisterHandle(c *controller.Controller) error {
 // @Router /v0/show [get]
 func Show(c *controller.Controller, group *gin.RouterGroup) {
 	group.GET("/show", cache.CachePage(c.Cache, time.Minute, func(ctx *gin.Context) {
+
 		page := cm.Page(ctx.Request, new([]model.Media))
 		find, err := page.Find(c.DB.Model(model.Media{}))
 		if err != nil {
@@ -41,8 +42,9 @@ func Show(c *controller.Controller, group *gin.RouterGroup) {
 			controller.FailedJSON(ctx, "data not found")
 			return
 		}
-
+		c.Cache.Lock()
 		ctx.JSON(http.StatusOK, find)
+		c.Cache.Unlock()
 	}))
 }
 
@@ -90,7 +92,8 @@ func Query(c *controller.Controller, group *gin.RouterGroup) {
 			controller.FailedJSON(ctx, "data not found")
 			return
 		}
-
+		c.Cache.Lock()
 		ctx.JSON(http.StatusOK, find)
+		c.Cache.Unlock()
 	})
 }
