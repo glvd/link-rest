@@ -3,7 +3,7 @@ package model
 import "github.com/glvd/link-rest/restapi/common/model"
 
 type File struct {
-	model.BaseModel `xorm:"extends" json:"-" swaggerignore:"true"`
+	model.BaseModel `json:"-" swaggerignore:"true"`
 	RootHash        string `gorm:"column:root_hash;unique" json:"root_hash"` //跟索引
 	KeyPath         string `gorm:"column:key_path"  json:"key_path"`         //秘钥
 	KeyHash         string `gorm:"column:key_hash"  json:"key_hash"`         //秘钥
