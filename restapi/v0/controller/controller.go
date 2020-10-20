@@ -48,9 +48,7 @@ func Show(c *controller.Controller, group *gin.RouterGroup) {
 			controller.FailedJSON(ctx, "data not found")
 			return
 		}
-		c.Cache.Lock()
 		ctx.JSON(http.StatusOK, find)
-		c.Cache.Unlock()
 	}))
 }
 
@@ -98,8 +96,6 @@ func Query(c *controller.Controller, group *gin.RouterGroup) {
 			controller.FailedJSON(ctx, "data not found")
 			return
 		}
-		c.Cache.Lock()
 		ctx.JSON(http.StatusOK, find)
-		c.Cache.Unlock()
 	})
 }
