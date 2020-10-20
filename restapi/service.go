@@ -14,9 +14,10 @@ import (
 )
 
 type service struct {
-	port int
-	serv http.Server
-	c    *controller.Controller
+	port      int
+	apiPrefix string
+	serv      http.Server
+	c         *controller.Controller
 }
 
 type Service = service
@@ -35,7 +36,8 @@ func New(port int) (*Service, error) {
 	}
 
 	return &service{
-		port: port,
+		port:      port,
+		apiPrefix: "api",
 		serv: http.Server{
 			Handler: c.Engine,
 			Addr:    fmt.Sprintf("0.0.0.0:%d", port),
@@ -45,8 +47,8 @@ func New(port int) (*Service, error) {
 }
 
 func (s *service) init() {
-	_ = v0.RegisterHandle("api", s.c)
-	_ = v1.RegisterHandle("api", s.c)
+	_ = v0.RegisterHandle(s.apiPrefix, s.c)
+	_ = v1.RegisterHandle(s.apiPrefix, s.c)
 }
 
 func (s *service) Start() error {
