@@ -45,8 +45,8 @@ func New(port int) (*Service, error) {
 }
 
 func (s *service) init() {
-	_ = v0.RegisterHandle(s.c)
-	_ = v1.RegisterHandle(s.c)
+	_ = v0.RegisterHandle("api", s.c)
+	_ = v1.RegisterHandle("api", s.c)
 }
 
 func (s *service) Start() error {

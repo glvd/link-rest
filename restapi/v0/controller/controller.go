@@ -14,11 +14,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterHandle(c *controller.Controller) error {
+func RegisterHandle(prefix string, c *controller.Controller) error {
 	if err := cm.Migration(c.DB); err != nil {
 		return err
 	}
-	group := c.Engine.Group(v0.Version)
+	var group *gin.RouterGroup
+	if prefix != "" {
+		group = c.Engine.Group(prefix).Group(v0.Version)
+	} else {
+		group = c.Engine.Group(v0.Version)
+	}
+
 	Show(c, group)
 	Query(c, group)
 	return nil
