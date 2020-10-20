@@ -1,15 +1,12 @@
 package controller
 
 import (
-	"github.com/gin-contrib/cache"
 	"github.com/glvd/link-rest/restapi/common/controller"
+	cm "github.com/glvd/link-rest/restapi/common/model"
 	v0 "github.com/glvd/link-rest/restapi/v0"
+	model "github.com/glvd/link-rest/restapi/v0/model"
 	"github.com/goextension/log"
 	"net/http"
-	"time"
-
-	cm "github.com/glvd/link-rest/restapi/common/model"
-	model "github.com/glvd/link-rest/restapi/v0/model"
 
 	"github.com/gin-gonic/gin"
 )
@@ -39,7 +36,7 @@ func RegisterHandle(prefix string, c *controller.Controller) error {
 // @Success 200 {object} model.Paginator{data=[]model.Media}
 // @Router /v0/show [get]
 func Show(c *controller.Controller, group *gin.RouterGroup) {
-	group.GET("/show", cache.CachePage(c.Cache, time.Minute, func(ctx *gin.Context) {
+	group.GET("/show", func(ctx *gin.Context) {
 		page := cm.Page(ctx.Request, new([]model.Media))
 		find, err := page.Find(c.DB.Model(model.Media{}))
 		if err != nil {
@@ -48,7 +45,7 @@ func Show(c *controller.Controller, group *gin.RouterGroup) {
 			return
 		}
 		ctx.JSON(http.StatusOK, find)
-	}))
+	})
 }
 
 // Show godoc
