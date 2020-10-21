@@ -53,9 +53,6 @@ type Connectable interface {
 }
 
 func ParseFromMap(m extmap.Map) Connectable {
-	if m == nil {
-		m = extmap.Map{}
-	}
 	switch m.GetStringD("SQLType", "mysql") {
 	default:
 		return parseMysql(m)

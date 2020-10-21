@@ -115,6 +115,8 @@ github.com/go-sql-driver/mysql v1.5.0/go.mod h1:DCzpHaOWr8IXmIStZouvnhqoel9Qv2LB
 github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
 github.com/goextension/extmap v0.0.2 h1:q6mWlPVK4ua1bvtWQJj310GV1NL5+FmIanja9gKSlRo=
 github.com/goextension/extmap v0.0.2/go.mod h1:Nfdawv1DbZzOgesdNLSiRdUy7oTkN6P4ugpGinSGuRQ=
+github.com/goextension/extmap v0.0.3 h1:KlLA1uG/89OhjlT05tGD5oAwd2g7C5XvKWRi7vXhrlY=
+github.com/goextension/extmap v0.0.3/go.mod h1:Nfdawv1DbZzOgesdNLSiRdUy7oTkN6P4ugpGinSGuRQ=
 github.com/goextension/log v0.0.2 h1:/KMuT22zzIMHe4qD7rR8dnfXWSFAyp+10pTC4fWLztI=
 github.com/goextension/log v0.0.2/go.mod h1:fz72q/d4Iw05nbRSbxgGkGNTne3jxrq2Td5ogfunZak=
 github.com/goextension/tool v0.0.2 h1:4SoC0qPW+vFmLAISGMakQyP/849kWKsPLtuucL0qN48=
