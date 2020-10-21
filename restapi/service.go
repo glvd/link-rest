@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/glvd/link-rest/db"
 	"github.com/glvd/link-rest/restapi/common/controller"
+	cm "github.com/glvd/link-rest/restapi/common/model"
 	"net/http"
 	"time"
 
@@ -46,13 +47,19 @@ func New(port int) (*Service, error) {
 	}, nil
 }
 
-func (s *service) init() {
+func (s *service) init() error {
+	if err := cm.Migration(s.c.DB); err != nil {
+		return err
+	}
 	_ = v0.RegisterHandle(s.apiPrefix, s.c)
 	_ = v1.RegisterHandle(s.apiPrefix, s.c)
+	return nil
 }
 
 func (s *service) Start() error {
-	s.init()
+	if err := s.init(); err != nil {
+		return err
+	}
 	return s.serv.ListenAndServe()
 }
 

@@ -15,9 +15,6 @@ import (
 )
 
 func RegisterHandle(prefix string, c *controller.Controller) error {
-	if err := cm.Migration(c.DB); err != nil {
-		return err
-	}
 	var group *gin.RouterGroup
 	if prefix != "" {
 		group = c.Engine.Group(prefix).Group(v1.Version)
