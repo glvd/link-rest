@@ -31,6 +31,18 @@ func init() {
 	testapi = api
 }
 
+var pinData = []string{
+	"bafybeif7b4txswioozvfwfcusyfo4qcojxoavzjsofzvxbbw5i2xvdhp54",
+	"bafybeiglokwfpgral7ac6kogpowsbhzb4bawuvllb7s5v4f5vxsaierydy",
+	"bafybeihyzaqplcngmartscvimfncjmcydmkrycoc77rzs7djeaslo7p43e",
+	"bafybeidtbdcc3shjgzjxar7cqvqqs6eifyduv4ohklo6k7d4izcsq6kkda",
+	"bafybeich4yzfoh7h2z2ra5se5datwhxdhiwokxvymzb6dpsld5jpbjinb4",
+	"bafybeiajveygfkkto6676xiq4dtirxkgmylzytqzrqmgro64ge2scrcheu",
+	"bafybeiciuhnkkuh6fht7thtku6esi3wuue56qwm3uuqanuowbwyylbtwoe",
+	"bafybeih526hqhpy7hid3jfu645qc75ywlvtyobbry7vhsbevmhtcxncxfe",
+	"bafybeiansxz7ci5xn5xfr7ecmj2hbbrn77et45gcnw2rmtrr4pybz2vwxq",
+}
+
 func TestScrapeParseHash(t *testing.T) {
 	err := cm.Migration(testdb)
 	if err != nil {
@@ -41,8 +53,7 @@ func TestScrapeParseHash(t *testing.T) {
 		db  *gorm.DB
 	}
 	type args struct {
-		ctx  context.Context
-		hash string
+		ctx context.Context
 	}
 	tests := []struct {
 		name    string
@@ -54,128 +65,22 @@ func TestScrapeParseHash(t *testing.T) {
 			name:   "",
 			fields: fields{},
 			args: args{
-				ctx:  context.TODO(),
-				hash: "QmanRrB2r4TsT76sjHEsizQiwsG1Pa6gEGk3AXKPWaXHLa",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmU1AoYRMJvnH8T3aw9nQT8kdUX1X2AM3RQSUfbst7tXqT",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmcVgEdKXmjqiht9iLbJzNyRuLJwJWrmct52SunkUfkPGD",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmWEyKaka5VKc21DsaTZsaY1vLaqqMLRrt1ii5ZgXTVL9M",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmYBprprxEvjqgS37ceG6jJzq2ji4WYnttcCvuM75iB4RF",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmcDz4ZM3k4MWj17P8CPiHBvTJUwaPwsTMUTsXTy5h5xjr",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmaXKETjqUNEcYxf2QfMEQNLmWQsAiRu6CgRWbRTvAMdmK",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmS9uLgrv79brSzzcUqhyRf6CUR3KCxxZD4pZzRGJsGaS6",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmRZfEjYRgYRtAKfsDefqs85sZrhV8VKvGmWiRHh1hoWmV",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "Qmf29JBwVZvBcSx167FzHPPYJCy8gG6xPcDWsJGzPSizxG",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmWFXcwjmDKb2WRNzJs33RTG6KYyyNjAmfKiyL1ZSbLSMK",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmSr2B5Tbnks775dorMAq9T47b6ebFxbnGRe55dMK74XoY",
-			},
-			wantErr: false,
-		},
-		{
-			name:   "",
-			fields: fields{},
-			args: args{
-				ctx:  context.TODO(),
-				hash: "QmW3vvz7pUGwAzdLDDUAiAkNE6yTUxWn7Som6trMzPeMPj",
+				ctx: context.TODO(),
 			},
 			wantErr: false,
 		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &scrape{
 				api: testapi,
 				db:  testdb,
 			}
-			if err := s.ParseHash(tt.args.ctx, tt.args.hash); (err != nil) != tt.wantErr {
-				t.Errorf("ParseHash() error = %v, wantErr %v", err, tt.wantErr)
+			for i := range pinData {
+				if err := s.ParseHash(tt.args.ctx, pinData[i]); (err != nil) != tt.wantErr {
+					t.Errorf("ParseHash() error = %v, wantErr %v", err, tt.wantErr)
+				}
 			}
 		})
 	}
