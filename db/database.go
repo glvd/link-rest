@@ -2,12 +2,10 @@ package db
 
 import (
 	"fmt"
-
 	"net/url"
 
 	"github.com/goextension/extmap"
 	"gorm.io/driver/mysql"
-	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
@@ -54,6 +52,8 @@ type Connectable interface {
 
 func ParseFromMap(m extmap.Map) Connectable {
 	switch m.GetStringD("SQLType", "mysql") {
+	case "sqlite":
+		return parseSqlite(m)
 	default:
 		return parseMysql(m)
 	}
@@ -82,14 +82,37 @@ func parseMysql(m extmap.Map) *mysqlInfo {
 	return c
 }
 
+type sqliteInfo struct {
+	SQLType string
+	DBName  string
+}
+
+func (s sqliteInfo) Type() string {
+	return "sqlite"
+}
+
+func (s sqliteInfo) String() string {
+	return s.DBName
+}
+
+func (s sqliteInfo) ConnectParams() (string, string) {
+	return s.Type(), s.String()
+}
+
+func parseSqlite(m extmap.Map) *sqliteInfo {
+	c := &sqliteInfo{
+		SQLType: "sqlite",
+		DBName:  "linker.db",
+	}
+	c.SQLType = m.GetStringD("SQLType", c.SQLType)
+	c.DBName = m.GetStringD("DBName", c.DBName)
+	return c
+}
+
 func New(c Connectable) (*gorm.DB, error) {
 	db, err := gorm.Open(mysql.Open(c.String()), nil)
 	if err != nil {
 		return nil, fmt.Errorf("connect db error:%w", err)
 	}
 	return db, nil
-}
-
-func OpenSqlite() {
-	sqlite.Open("linker.db")
 }
