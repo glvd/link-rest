@@ -2,10 +2,11 @@ package db
 
 import (
 	"fmt"
+	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"net/url"
 
 	"github.com/goextension/extmap"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -30,6 +31,10 @@ type mysqlInfo struct {
 	Location string
 }
 
+func (m mysqlInfo) Open() gorm.Dialector {
+	return mysql.Open(m.String())
+}
+
 func (m mysqlInfo) Type() string {
 	return "mysql"
 }
@@ -48,6 +53,7 @@ type Connectable interface {
 	Type() string
 	String() string
 	ConnectParams() (string, string)
+	Open() gorm.Dialector
 }
 
 func ParseFromMap(m extmap.Map) Connectable {
@@ -87,6 +93,10 @@ type sqliteInfo struct {
 	DBName  string
 }
 
+func (s sqliteInfo) Open() gorm.Dialector {
+	return sqlite.Open(s.String())
+}
+
 func (s sqliteInfo) Type() string {
 	return "sqlite"
 }
@@ -110,7 +120,7 @@ func parseSqlite(m extmap.Map) *sqliteInfo {
 }
 
 func New(c Connectable) (*gorm.DB, error) {
-	db, err := gorm.Open(mysql.Open(c.String()), nil)
+	db, err := gorm.Open(c.Open(), nil)
 	if err != nil {
 		return nil, fmt.Errorf("connect db error:%w", err)
 	}
