@@ -47,8 +47,8 @@ var pinData = []string{
 	//"bafybeiciuhnkkuh6fht7thtku6esi3wuue56qwm3uuqanuowbwyylbtwoe",
 	//"bafybeih526hqhpy7hid3jfu645qc75ywlvtyobbry7vhsbevmhtcxncxfe",
 	//"bafybeiansxz7ci5xn5xfr7ecmj2hbbrn77et45gcnw2rmtrr4pybz2vwxq",
-	"bafybeia7yfca6lpgz3y4vaubypoaj4wwkslolulmovzek3q5b2xved2azy",
-	"bafybeib7c3yeangj2jr3y6vnh3fivxgzddpu6s2nl6qhh343pqjbkblxiq",
+	//"bafybeia7yfca6lpgz3y4vaubypoaj4wwkslolulmovzek3q5b2xved2azy",
+	"bafybeiff6imnzijlsrrhw672aceypk3kmgbn4c6l2cgai2neheb76hfrua",
 }
 
 func TestScrapeParseHash(t *testing.T) {
