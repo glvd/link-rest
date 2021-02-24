@@ -3,12 +3,13 @@ package scrape
 import (
 	"context"
 	"github.com/glvd/link-rest/db"
+	"github.com/glvd/link-rest/library/multiformats/go-multiaddr"
 	cm "github.com/glvd/link-rest/restapi/common/model"
 	_ "github.com/glvd/link-rest/restapi/v0/model"
 	_ "github.com/glvd/link-rest/restapi/v1/model"
 
+	httpapi "github.com/glvd/link-rest/library/ipfs/go-ipfs-http-client"
 	"github.com/goextension/log/zap"
-	httpapi "github.com/ipfs/go-ipfs-http-client"
 	"gorm.io/gorm"
 	"testing"
 )
@@ -24,7 +25,12 @@ func init() {
 		panic(err)
 	}
 	testdb = engine.Debug()
-	api, err := httpapi.NewLocalApi()
+
+	newMultiaddr, err := multiaddr.NewMultiaddr("/ip4/172.27.6.247/tcp/5001")
+	if err != nil {
+		panic(err)
+	}
+	api, err := httpapi.NewApi(newMultiaddr)
 	if err != nil {
 		return
 	}
@@ -42,6 +48,7 @@ var pinData = []string{
 	//"bafybeih526hqhpy7hid3jfu645qc75ywlvtyobbry7vhsbevmhtcxncxfe",
 	//"bafybeiansxz7ci5xn5xfr7ecmj2hbbrn77et45gcnw2rmtrr4pybz2vwxq",
 	"bafybeia7yfca6lpgz3y4vaubypoaj4wwkslolulmovzek3q5b2xved2azy",
+	"bafybeib7c3yeangj2jr3y6vnh3fivxgzddpu6s2nl6qhh343pqjbkblxiq",
 }
 
 func TestScrapeParseHash(t *testing.T) {

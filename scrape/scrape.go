@@ -5,13 +5,13 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/glvd/link-rest/db"
+	"github.com/glvd/link-rest/library/ipfs/go-cid"
+	files "github.com/glvd/link-rest/library/ipfs/go-ipfs-files"
+	"github.com/glvd/link-rest/library/ipfs/go-ipfs-http-client"
+	iface "github.com/glvd/link-rest/library/ipfs/interface-go-ipfs-core"
+	"github.com/glvd/link-rest/library/ipfs/interface-go-ipfs-core/path"
 	"github.com/glvd/link-rest/restapi/v0/model"
 	"github.com/goextension/log"
-	"github.com/ipfs/go-cid"
-	files "github.com/ipfs/go-ipfs-files"
-	"github.com/ipfs/go-ipfs-http-client"
-	iface "github.com/ipfs/interface-go-ipfs-core"
-	"github.com/ipfs/interface-go-ipfs-core/path"
 	"gorm.io/gorm"
 	"io/ioutil"
 	"strings"
@@ -107,7 +107,7 @@ func (s *scrape) ParseHash(ctx context.Context, hash string) error {
 
 	node, err := s.api.Unixfs().Get(ctx, path.New(f.InfoHash))
 	if err != nil {
-		log.Error("http get error", err)
+		log.Error("http get error:", err)
 		return err
 	}
 
@@ -119,7 +119,7 @@ func (s *scrape) ParseHash(ctx context.Context, hash string) error {
 	info := model.Info{}
 	infoData, err := ioutil.ReadAll(file)
 	if err != nil {
-		log.Error("info read error", err)
+		log.Error("info read error:", err)
 		return err
 	}
 	err = json.Unmarshal(infoData, &info)

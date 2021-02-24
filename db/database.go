@@ -70,7 +70,7 @@ func parseMysql(m extmap.Map) *mysqlInfo {
 		SQLType:  "mysql",
 		Username: "root",
 		Password: "111111",
-		Addr:     "127.0.0.1",
+		Addr:     "192.168.2.201",
 		Port:     "3306",
 		Schema:   "linker",
 		Param:    "?",
